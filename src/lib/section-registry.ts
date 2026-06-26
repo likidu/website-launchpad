@@ -1,6 +1,7 @@
 import type {
   AgendaProps,
   ColumnsProps,
+  CaseStudyCardsProps,
   ComparisonTableProps,
   CodeBlockProps,
   CtaProps,
@@ -128,6 +129,20 @@ const defaultFeatureCardProps: FeatureCardProps = {
   items: [{ title: '', description: '' }],
   columns: 2,
   borderStyle: 'gray',
+}
+
+const defaultCaseStudyCardsProps: CaseStudyCardsProps = {
+  title: '',
+  items: [
+    {
+      badge: 'Agentic AI',
+      logo: { image: { url: '' }, alt: '' },
+      title: '',
+      description: '',
+      stats: [{ value: '', label: '' }],
+      cta: 'Read the story',
+    },
+  ],
 }
 
 const defaultFeatureTabsProps: FeatureTabsProps = {
@@ -452,6 +467,55 @@ export const schemaMap: Record<SectionType, SectionSchema<any>> = {
           { label: '2', value: '2' },
           { label: '3', value: '3' },
           { label: '4', value: '4' },
+        ],
+      },
+    ],
+  },
+  caseStudyCards: {
+    type: 'caseStudyCards',
+    label: 'Case Study Cards',
+    description: 'Customer case study cards with metrics and CTA',
+    defaultProps: defaultCaseStudyCardsProps,
+    defaultStyle: { background: 'gradient-dark-bottom', spacing: 'section' },
+    fields: [
+      { type: 'text', key: 'eyebrow', label: 'Eyebrow' },
+      { type: 'text', key: 'title', label: 'Title' },
+      {
+        type: 'array',
+        key: 'items',
+        label: 'Cards',
+        itemLabel: 'Case Study Card',
+        newItem: () => ({
+          badge: 'Agentic AI',
+          logo: { image: { url: '' }, alt: '' },
+          title: '',
+          description: '',
+          stats: [{ value: '', label: '' }],
+          cta: 'Read the story',
+        }),
+        fields: [
+          { type: 'text', key: 'badge', label: 'Badge' },
+          {
+            type: 'object',
+            key: 'logo',
+            label: 'Logo',
+            fields: [{ type: 'image', key: 'image', label: 'Logo Image' }],
+          },
+          { type: 'text', key: 'title', label: 'Card Title' },
+          { type: 'textarea', key: 'description', label: 'Summary', rows: 3 },
+          { type: 'text', key: 'href', label: 'Story Link' },
+          { type: 'text', key: 'cta', label: 'CTA Label' },
+          {
+            type: 'array',
+            key: 'stats',
+            label: 'Metrics',
+            itemLabel: 'Metric',
+            newItem: () => ({ value: '', label: '' }),
+            fields: [
+              { type: 'text', key: 'value', label: 'Metric Value' },
+              { type: 'text', key: 'label', label: 'Metric Label' },
+            ],
+          },
         ],
       },
     ],

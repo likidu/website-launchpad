@@ -5,6 +5,7 @@ import {
   BarChart2,
   Grid3X3,
   CreditCard,
+  PanelsTopLeft,
   Rows3,
   Sparkles,
   Building2,
@@ -42,6 +43,10 @@ const SECTION_OPTIONS: SectionTypeOption[] = [
   {
     type: 'featureCard',
     Icon: CreditCard,
+  },
+  {
+    type: 'caseStudyCards',
+    Icon: PanelsTopLeft,
   },
   {
     type: 'featureTabs',
