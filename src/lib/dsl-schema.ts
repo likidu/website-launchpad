@@ -383,7 +383,7 @@ export interface FeatureMediaProps {
   title?: string
   subtitle?: string
   items: FeatureMediaItemDSL[]
-  startPosition?: 'left' | 'right'
+  startPosition?: 'left' | 'right' | 'full'
   className?: string
 }
 
