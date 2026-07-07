@@ -78,6 +78,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
     },
     { url: '/playbook/vibe-coding-tech-stack-guide/', priority: 0.7, changeFrequency: 'monthly' },
+    {
+      url: '/playbook/schema-changes-midnight-maintenance/',
+      priority: 0.7,
+      changeFrequency: 'monthly',
+    },
     // Programs pages
     {
       url: '/programs/agentic-ai-instance-capacity/',
