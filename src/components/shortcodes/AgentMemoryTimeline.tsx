@@ -491,6 +491,18 @@ export function AgentMemoryTimeline({
       >
         persisted events: {visualState.persistedCount}
       </div>
+
+      <p
+        style={{
+          marginTop: 14,
+          fontSize: 13,
+          lineHeight: 1.5,
+          color: '#6B7077',
+        }}
+      >
+        Short-term memory clears when a session ends. Persistent memory carries context into the
+        next session.
+      </p>
     </div>
   )
 }
