@@ -665,7 +665,7 @@ Available section types (choose appropriate mix):
 - { type: "featureCard", props: { eyebrow?, title, subtitle?, items: [{icon?, title, description, borderColor?, href?, className?}], columns?: 2|3|4, borderStyle?: "gray"|"color", className? } }
 - { type: "featureTabs", props: { eyebrow?, title, subtitle?, tabs: [{id, label, description?, bullets?, primaryCta?, secondaryCta?, content?, image: { image: {assetId?, url}, alt?, width?, height? }}], autoSwitch?, autoSwitchInterval?, className? } }
 - { type: "featureHighlights", props: { eyebrow?, title, subtitle?, items: [{variant: "red"|"violet"|"blue"|"teal", title, description, cta: {text, href}, icon?}], columns?: 2|3|4, viewMore?: {text, href}, iconSize?: 32|48, className? } }
-- { type: "featureMedia", props: { eyebrow?, title?, subtitle?, items: [{title, description, image: {image: {assetId?, url}, alt?, width?, height?}, imagePosition?: "left"|"right"}], startPosition?: "left"|"right", className? } }
+- { type: "featureMedia", props: { eyebrow?, title?, subtitle?, items: [{title, description (supports inline links via [label](url)), image: {image: {assetId?, url}, alt?, width?, height?}, imagePosition?: "left"|"right"}], startPosition?: "left"|"right", className? } }
 - { type: "faq", props: { title?, items: [{q, a}], className? } }
 - { type: "cta", props: { title, subtitle?, primaryCta: {text,href}, secondaryCta?: {text,href}, image?: { image: {assetId?, url}, alt?, width?, height? }, className? } }
 - { type: "testimonials", props: { eyebrow?, title, items: [{quote, author, href?, cta?, logo?: { image: {assetId?, url}, alt?, size? }}], className? } }
