@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: '/glossary/', priority: 0.7, changeFrequency: 'monthly' },
     { url: '/what-is-tidb/', priority: 0.8, changeFrequency: 'monthly' },
     { url: '/integrations/', priority: 0.8, changeFrequency: 'weekly' },
+    { url: '/tidb-cloud-lake/', priority: 0.8, changeFrequency: 'weekly' },
     // AI pages
     { url: '/ai/', priority: 0.8, changeFrequency: 'weekly' },
     { url: '/ai/vector-search/', priority: 0.7, changeFrequency: 'monthly' },
@@ -64,6 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Playbook pages
     { url: '/playbook/', priority: 0.8, changeFrequency: 'weekly' },
+    { url: '/playbook/aurora-mysql-migration/', priority: 0.7, changeFrequency: 'monthly' },
     { url: '/playbook/embed-vector-db-build-rag/', priority: 0.7, changeFrequency: 'monthly' },
     { url: '/playbook/escape-mysql-sharding-pain/', priority: 0.7, changeFrequency: 'monthly' },
     {
@@ -77,6 +79,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
     },
     { url: '/playbook/vibe-coding-tech-stack-guide/', priority: 0.7, changeFrequency: 'monthly' },
+    {
+      url: '/playbook/schema-changes-midnight-maintenance/',
+      priority: 0.7,
+      changeFrequency: 'monthly',
+    },
     // Programs pages
     {
       url: '/programs/agentic-ai-instance-capacity/',
