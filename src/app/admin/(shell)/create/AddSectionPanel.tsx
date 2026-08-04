@@ -13,6 +13,8 @@ import {
   Megaphone,
   FormInput,
   GalleryHorizontalEnd,
+  Columns2,
+  Code2,
   X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -52,6 +54,14 @@ const SECTION_OPTIONS: SectionTypeOption[] = [
   {
     type: 'featureMedia',
     Icon: GalleryHorizontalEnd,
+  },
+  {
+    type: 'columns',
+    Icon: Columns2,
+  },
+  {
+    type: 'shortcode',
+    Icon: Code2,
   },
   {
     type: 'logoCloud',
