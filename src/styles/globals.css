@@ -726,3 +726,221 @@
     animation: none;
   }
 }
+
+/* ── TiDB Cloud Filesystem landing page (/tidb-cloud-filesystem/) ─────────────
+   Looping mechanism diagrams on the three value cards. Timings are phased so
+   the three consistency-mode dots arrive at 18% / 46% / 76% of one shared 6s
+   cycle (fastest guarantee arrives first). */
+
+@keyframes tdc-travel-a {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  18% {
+    left: calc(100% - 9px);
+  }
+  92% {
+    left: calc(100% - 9px);
+    opacity: 1;
+  }
+  97%,
+  100% {
+    opacity: 0;
+    left: calc(100% - 9px);
+  }
+}
+@keyframes tdc-travel-b {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  46% {
+    left: calc(100% - 9px);
+  }
+  92% {
+    left: calc(100% - 9px);
+    opacity: 1;
+  }
+  97%,
+  100% {
+    opacity: 0;
+    left: calc(100% - 9px);
+  }
+}
+@keyframes tdc-travel-c {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  76% {
+    left: calc(100% - 9px);
+  }
+  92% {
+    left: calc(100% - 9px);
+    opacity: 1;
+  }
+  97%,
+  100% {
+    opacity: 0;
+    left: calc(100% - 9px);
+  }
+}
+@keyframes tdc-seen-a {
+  0%,
+  16% {
+    opacity: 0.22;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #5d6974;
+  }
+  20%,
+  92% {
+    opacity: 1;
+    border-color: #dc150b;
+    color: #fff;
+  }
+  97%,
+  100% {
+    opacity: 0.22;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #5d6974;
+  }
+}
+@keyframes tdc-seen-b {
+  0%,
+  44% {
+    opacity: 0.22;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #5d6974;
+  }
+  48%,
+  92% {
+    opacity: 1;
+    border-color: #dc150b;
+    color: #fff;
+  }
+  97%,
+  100% {
+    opacity: 0.22;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #5d6974;
+  }
+}
+@keyframes tdc-seen-c {
+  0%,
+  74% {
+    opacity: 0.22;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #5d6974;
+  }
+  78%,
+  92% {
+    opacity: 1;
+    border-color: #dc150b;
+    color: #fff;
+  }
+  97%,
+  100% {
+    opacity: 0.22;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #5d6974;
+  }
+}
+@keyframes tdc-band {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  24%,
+  88% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+}
+@keyframes tdc-drop {
+  0%,
+  18% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  44%,
+  82% {
+    opacity: 0.16;
+    transform: translateX(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes tdc-keep {
+  0%,
+  18% {
+    opacity: 0.28;
+  }
+  44%,
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.28;
+  }
+}
+
+.tdc-travel-a {
+  animation: tdc-travel-a 6s linear infinite;
+}
+.tdc-travel-b {
+  animation: tdc-travel-b 6s linear infinite;
+}
+.tdc-travel-c {
+  animation: tdc-travel-c 6s linear infinite;
+}
+.tdc-seen-a {
+  animation: tdc-seen-a 6s linear infinite;
+}
+.tdc-seen-b {
+  animation: tdc-seen-b 6s linear infinite;
+}
+.tdc-seen-c {
+  animation: tdc-seen-c 6s linear infinite;
+}
+.tdc-band {
+  animation: tdc-band 6s ease-in-out infinite;
+}
+.tdc-drop {
+  animation: tdc-drop 6s ease-in-out infinite;
+}
+.tdc-keep {
+  animation: tdc-keep 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tdc-travel-a,
+  .tdc-travel-b,
+  .tdc-travel-c,
+  .tdc-seen-a,
+  .tdc-seen-b,
+  .tdc-seen-c,
+  .tdc-band,
+  .tdc-drop,
+  .tdc-keep {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
