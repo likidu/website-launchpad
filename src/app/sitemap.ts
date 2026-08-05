@@ -97,7 +97,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
     },
     {
-      url: '/solutions/ai-agent-memory/',
+      url: '/solutions/ai-agent-context/',
       priority: 0.8,
       changeFrequency: 'monthly',
     },
