@@ -207,15 +207,39 @@ That is a real copywriting discipline and it costs nothing.
 1. **Hero** — headline, subhead carrying the differentiation, code panel showing create →
    mount → write → mountless readback. `Quickstart` primary, `Talk to us` secondary. **Two
    CTAs, nothing else.**
-2. **What makes it different** — three cards, rebuilt per Decision 13:
-   - **Consistency modes** — writeback / close-sync / write-sync. The strongest thing we own,
-     and it passes the structural test: nobody builds consistency modes for a local
-     single-file store. Archil cannot answer "what does a concurrent reader see."
+2. **What makes it different** — three cards, rebuilt per Decision 13. **Order changed
+   2026-08-06: cards run easiest → deepest**, so consistency modes — still the strongest
+   thing we own, and still the hardest to grasp in three seconds — moves from first to
+   last, closing the section as the deep cut rather than opening it as a riddle:
    - **Git-aware workspace** — clean tree as baseline, dirty overlay, object pack for new
      objects. `fs-git`. Against Archil ❌, Mesa ⚠️, Turso ❌.
    - **Rebuildable vs persistent** — `node_modules`, `.tsbuildinfo` and `dist` are not worth
      persisting; test results, failure logs and patches are. The split follows the project's
      own shape. **Animation budget lives here.**
+   - **Consistency modes** — writeback / close-sync / write-sync. Passes the structural
+     test: nobody builds consistency modes for a local single-file store. Archil cannot
+     answer "what does a concurrent reader see."
+
+   **Card copy — approved 2026-08-06 (Decision 15 addendum).** Titles state the reader's
+   gain; descriptions lead with value and keep the technical payload as the second beat;
+   the moat argument lives once in the subhead, not per card. In the new order:
+
+   > **Git-aware workspace — "A resumed workspace still has its git state."** (unchanged)
+   > The branch, the uncommitted changes, the objects the agent created — all of it comes
+   > back on resume. Not a fresh clone; the actual working state.
+   >
+   > **Rebuildable vs persistent — "Keep the outcome. Drop the noise."** (unchanged — the
+   > register benchmark)
+   > node_modules and dist can be rebuilt anywhere, so they stay local. What can't be
+   > rebuilt — test results, failure logs, patches — is what persists.
+   >
+   > **Consistency modes — "You decide when other agents see a write."** (was "You choose
+   > what a concurrent reader sees." — 'concurrent reader' is database-speak)
+   > Writeback for speed, write-sync for certainty, close-sync in between — chosen per
+   > workspace. You decide how quickly every runtime agrees on what's in a file.
+
+   Accuracy guard kept: no "agents always agree" phrasing — under writeback they can
+   briefly disagree; that tradeoff is the product.
 
    **Header copy — reworked 2026-08-06 (Decision 15).** Draft for the page update:
 

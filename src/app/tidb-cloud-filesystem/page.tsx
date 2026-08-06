@@ -511,54 +511,8 @@ export default function TidbCloudFilesystemPage() {
             </p>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {/* Consistency modes */}
-              <SlideIn direction="up">
-                <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
-                    Consistency modes
-                  </p>
-                  {/* title-case-ignore */}
-                  <h3 className="text-h3-lg font-bold">
-                    You choose what a concurrent reader sees.
-                  </h3>
-                  <p className="flex-1 text-body-md text-carbon-400">
-                    Writeback, close-sync or write-sync, set per workspace. Nobody builds a
-                    visibility guarantee for a store that only one machine can hold — which is why
-                    nobody else can answer this question.
-                  </p>
-                  <div className="grid gap-4 border-t border-white/10 pt-[22px]">
-                    <div className="grid grid-cols-[82px_1fr_86px] gap-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                      <span>MODE</span>
-                      <span>WRITE COMMITS</span>
-                      <span className="text-right">READER SEES</span>
-                    </div>
-                    {consistencyModes.map((m) => (
-                      <div
-                        key={m.mode}
-                        className="grid grid-cols-[82px_1fr_86px] items-center gap-3"
-                      >
-                        <span className="font-mono text-[11px] text-white">{m.mode}</span>
-                        <span className="relative h-0.5 bg-white/[0.12]">
-                          <span
-                            className={`${m.travelClass} absolute -top-[3.5px] h-[9px] w-[9px] rounded-full bg-brand-red-primary`}
-                          />
-                        </span>
-                        <span
-                          className={`${m.seenClass} rounded border border-white/[0.12] py-1 text-center font-mono text-[9px]`}
-                        >
-                          {m.seen}
-                        </span>
-                      </div>
-                    ))}
-                    <p className="mt-1 font-mono text-[10px] leading-[1.6] text-carbon-700">
-                      Fastest write at the bottom, strongest guarantee at the top.
-                    </p>
-                  </div>
-                </div>
-              </SlideIn>
-
               {/* Git-aware workspace */}
-              <SlideIn direction="up" delay={70}>
+              <SlideIn direction="up">
                 <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
                   <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
                     Git-aware workspace
@@ -568,9 +522,8 @@ export default function TidbCloudFilesystemPage() {
                     A resumed workspace still has its git state.
                   </h3>
                   <p className="flex-1 text-body-md text-carbon-400">
-                    Not the committed tree a fresh clone gives you — the clean tree as baseline, the
-                    agent&apos;s uncommitted changes as an overlay, and a pack for objects it
-                    created. That is the difference between a folder and a workspace.
+                    The branch, the uncommitted changes, the objects the agent created — all of it
+                    comes back on resume. Not a fresh clone; the actual working state.
                   </p>
                   <div className="grid gap-2.5 border-t border-white/10 pt-[22px]">
                     <p className="mb-1 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
@@ -601,7 +554,7 @@ export default function TidbCloudFilesystemPage() {
               </SlideIn>
 
               {/* Rebuildable vs persistent */}
-              <SlideIn direction="up" delay={140}>
+              <SlideIn direction="up" delay={70}>
                 <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
                   <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
                     Rebuildable vs persistent
@@ -609,9 +562,9 @@ export default function TidbCloudFilesystemPage() {
                   {/* title-case-ignore */}
                   <h3 className="text-h3-lg font-bold">Keep the outcome. Drop the noise.</h3>
                   <p className="flex-1 text-body-md text-carbon-400 [&_code]:font-mono">
-                    A Node build is the stress test: a huge <code>node_modules</code>,{' '}
-                    <code>.tsbuildinfo</code> churning, <code>dist</code> regenerating every run.
-                    None of it is worth persisting. The test results, failure logs and patches are.
+                    <code>node_modules</code> and <code>dist</code> can be rebuilt anywhere, so they
+                    stay local. What can&apos;t be rebuilt — test results, failure logs, patches —
+                    is what persists.
                   </p>
                   <div className="grid grid-cols-2 gap-[18px] border-t border-white/10 pt-[22px]">
                     <div className="grid content-start gap-2">
@@ -645,6 +598,52 @@ export default function TidbCloudFilesystemPage() {
                     <p className="col-span-2 mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
                       The split follows the project&apos;s own shape, not a config file you
                       maintain.
+                    </p>
+                  </div>
+                </div>
+              </SlideIn>
+
+              {/* Consistency modes */}
+              <SlideIn direction="up" delay={140}>
+                <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
+                    Consistency modes
+                  </p>
+                  {/* title-case-ignore */}
+                  <h3 className="text-h3-lg font-bold">
+                    You decide when other agents see a write.
+                  </h3>
+                  <p className="flex-1 text-body-md text-carbon-400">
+                    Writeback for speed, write-sync for certainty, close-sync in between — chosen
+                    per workspace. You decide how quickly every runtime agrees on what&apos;s in a
+                    file.
+                  </p>
+                  <div className="grid gap-4 border-t border-white/10 pt-[22px]">
+                    <div className="grid grid-cols-[82px_1fr_86px] gap-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                      <span>MODE</span>
+                      <span>WRITE COMMITS</span>
+                      <span className="text-right">READER SEES</span>
+                    </div>
+                    {consistencyModes.map((m) => (
+                      <div
+                        key={m.mode}
+                        className="grid grid-cols-[82px_1fr_86px] items-center gap-3"
+                      >
+                        <span className="font-mono text-[11px] text-white">{m.mode}</span>
+                        <span className="relative h-0.5 bg-white/[0.12]">
+                          <span
+                            className={`${m.travelClass} absolute -top-[3.5px] h-[9px] w-[9px] rounded-full bg-brand-red-primary`}
+                          />
+                        </span>
+                        <span
+                          className={`${m.seenClass} rounded border border-white/[0.12] py-1 text-center font-mono text-[9px]`}
+                        >
+                          {m.seen}
+                        </span>
+                      </div>
+                    ))}
+                    <p className="mt-1 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                      Fastest write at the bottom, strongest guarantee at the top.
                     </p>
                   </div>
                 </div>
