@@ -43,6 +43,7 @@ precision highp float;
 uniform vec2  uResolution;
 uniform float uTime;
 uniform float uProgress;
+uniform float uExit;
 uniform float uIntensity;
 
 // --- design-frame geometry -------------------------------------------------
@@ -107,6 +108,10 @@ float sdTriangle(vec2 p, vec2 p0, vec2 p1, vec2 p2) {
   return -sqrt(d.x) * sign(d.y);
 }
 
+// A draining beam dissolves over the last stretch of its drain window instead
+// of pinching down to a bright dot at the prism face.
+float drainAmp(float e) { return 1.0 - smoothstep(0.55, 0.95, e); }
+
 // One beam: tight exponential core (bleeding toward warm white — hot cores
 // overexpose) + wide inverse-power tail. The tail IS the bloom; haze
 // modulates it so the air visibly carries the light.
@@ -143,12 +148,22 @@ void main() {
   // Left half stays low-luminance atmosphere behind the numeral: content wins.
   float leftSafety = mix(0.22, 1.0, smoothstep(0.0, 880.0, p.x));
 
-  // beam i: origin (-140, y_i) → ENTRY, weight w_i, stagger 0.07
+  // beam i: origin (-140, y_i) → ENTRY, weight w_i, stagger 0.07.
+  // Two-ended segment: the draw end follows uProgress, the drain end follows
+  // uExit through the same slices — the exit is a switch-off, not a rewind:
+  // the tail lifts off its origin and the last of the light sweeps into the
+  // prism in its direction of travel.
   float r0 = smoothstep(0.03, 0.25, uProgress);
   float r1 = smoothstep(0.10, 0.32, uProgress);
   float r2 = smoothstep(0.17, 0.39, uProgress);
   float r3 = smoothstep(0.24, 0.46, uProgress);
   float r4 = smoothstep(0.31, 0.53, uProgress);
+
+  float e0 = smoothstep(0.03, 0.25, uExit);
+  float e1 = smoothstep(0.10, 0.32, uExit);
+  float e2 = smoothstep(0.17, 0.39, uExit);
+  float e3 = smoothstep(0.24, 0.46, uExit);
+  float e4 = smoothstep(0.31, 0.53, uExit);
 
   // Real light is never perfectly steady — ±4% wobble on slow sine taps.
   float f0 = 1.0 + 0.04 * sin(uTime * 1.31 + 0.7);
@@ -157,15 +172,23 @@ void main() {
   float f3 = 1.0 + 0.04 * sin(uTime * 1.51 + 1.4);
   float f4 = 1.0 + 0.04 * sin(uTime * 1.93 + 5.3);
 
+  vec2 o0 = vec2(-140.0,  40.0);
+  vec2 o1 = vec2(-140.0, 210.0);
+  vec2 o2 = vec2(-140.0, 400.0);
+  vec2 o3 = vec2(-140.0, 590.0);
+  vec2 o4 = vec2(-140.0, 760.0);
+
   // Magenta / Rose / Vermillion / Orange / Amber — weights 15/30/25/20/10.
-  if (r0 > 0.001) hdr += leftSafety * beamGlow(p, vec2(-140.0,  40.0), mix(vec2(-140.0,  40.0), ENTRY, r0), lin(vec3(255.0,  45.0, 149.0)), 2.6 * 0.15 * f0, 0.28, 0.0011, haze);
-  if (r1 > 0.001) hdr += leftSafety * beamGlow(p, vec2(-140.0, 210.0), mix(vec2(-140.0, 210.0), ENTRY, r1), lin(vec3(255.0,  23.0,  68.0)), 2.6 * 0.30 * f1, 0.20, 0.0011, haze);
-  if (r2 > 0.001) hdr += leftSafety * beamGlow(p, vec2(-140.0, 400.0), mix(vec2(-140.0, 400.0), ENTRY, r2), lin(vec3(255.0,  78.0,   0.0)), 2.6 * 0.25 * f2, 0.22, 0.0011, haze);
-  if (r3 > 0.001) hdr += leftSafety * beamGlow(p, vec2(-140.0, 590.0), mix(vec2(-140.0, 590.0), ENTRY, r3), lin(vec3(255.0, 138.0,   0.0)), 2.6 * 0.20 * f3, 0.24, 0.0011, haze);
-  if (r4 > 0.001) hdr += leftSafety * beamGlow(p, vec2(-140.0, 760.0), mix(vec2(-140.0, 760.0), ENTRY, r4), lin(vec3(255.0, 179.0,   0.0)), 2.6 * 0.10 * f4, 0.30, 0.0011, haze);
+  if (r0 - e0 > 0.001) hdr += leftSafety * beamGlow(p, mix(o0, ENTRY, e0), mix(o0, ENTRY, r0), lin(vec3(255.0,  45.0, 149.0)), 2.6 * 0.15 * f0 * drainAmp(e0), 0.28, 0.0011, haze);
+  if (r1 - e1 > 0.001) hdr += leftSafety * beamGlow(p, mix(o1, ENTRY, e1), mix(o1, ENTRY, r1), lin(vec3(255.0,  23.0,  68.0)), 2.6 * 0.30 * f1 * drainAmp(e1), 0.20, 0.0011, haze);
+  if (r2 - e2 > 0.001) hdr += leftSafety * beamGlow(p, mix(o2, ENTRY, e2), mix(o2, ENTRY, r2), lin(vec3(255.0,  78.0,   0.0)), 2.6 * 0.25 * f2 * drainAmp(e2), 0.22, 0.0011, haze);
+  if (r3 - e3 > 0.001) hdr += leftSafety * beamGlow(p, mix(o3, ENTRY, e3), mix(o3, ENTRY, r3), lin(vec3(255.0, 138.0,   0.0)), 2.6 * 0.20 * f3 * drainAmp(e3), 0.24, 0.0011, haze);
+  if (r4 - e4 > 0.001) hdr += leftSafety * beamGlow(p, mix(o4, ENTRY, e4), mix(o4, ENTRY, r4), lin(vec3(255.0, 179.0,   0.0)), 2.6 * 0.10 * f4 * drainAmp(e4), 0.30, 0.0011, haze);
 
   // --- convergence: entry caustic + glass interior + exit bloom ------------
-  float conv = smoothstep(0.42, 0.68, uProgress);
+  // The glass unwinds on exit: caustic, interior gradient and refracted path
+  // let go once the last input beam has landed.
+  float conv = smoothstep(0.42, 0.68, uProgress) * (1.0 - smoothstep(0.40, 0.68, uExit));
 
   float dEn = length(p - ENTRY);
   hdr += lin(vec3(255.0, 226.0, 192.0)) * conv * 2.8 / (1.0 + dEn * dEn * 0.004);
@@ -179,37 +202,53 @@ void main() {
 
     // Internal refracted path ENTRY → BEND → EXIT. The upward kink through
     // BEND is the primary "glass" cue — don't straighten it.
+    // On exit the lit span drains along its own direction of travel.
     float pathRev = smoothstep(0.46, 0.66, uProgress);
-    if (pathRev > 0.001) {
-      float t1;
-      float d1 = sdSegT(p, ENTRY, mix(ENTRY, BEND, clamp(pathRev * 2.0, 0.0, 1.0)), t1);
-      vec3 g1 = mix(lin(vec3(255.0, 217.0, 160.0)), lin(vec3(255.0, 106.0, 43.0)), t1);
-      hdr += glass * g1 * exp(-d1 * 0.30) * 1.4 * pathRev;
+    float pathDrn = smoothstep(0.40, 0.68, uExit);
+    if (pathRev - pathDrn > 0.001) {
+      float pAmp = 1.0 - smoothstep(0.75, 1.0, pathDrn);
+      float rev1 = clamp(pathRev * 2.0, 0.0, 1.0);
+      float drn1 = clamp(pathDrn * 2.0, 0.0, 1.0);
+      if (rev1 - drn1 > 0.001) {
+        float t1;
+        float d1 = sdSegT(p, mix(ENTRY, BEND, drn1), mix(ENTRY, BEND, rev1), t1);
+        vec3 g1 = mix(lin(vec3(255.0, 217.0, 160.0)), lin(vec3(255.0, 106.0, 43.0)), t1);
+        hdr += glass * g1 * exp(-d1 * 0.30) * 1.4 * pathRev * pAmp;
+      }
       if (pathRev > 0.5) {
-        float t2;
-        float d2 = sdSegT(p, BEND, mix(BEND, EXIT, clamp(pathRev * 2.0 - 1.0, 0.0, 1.0)), t2);
-        vec3 g2 = mix(lin(vec3(255.0, 106.0, 43.0)), lin(vec3(220.0, 21.0, 11.0)), t2);
-        hdr += glass * g2 * exp(-d2 * 0.30) * 1.6 * pathRev;
+        float rev2 = clamp(pathRev * 2.0 - 1.0, 0.0, 1.0);
+        float drn2 = clamp(pathDrn * 2.0 - 1.0, 0.0, 1.0);
+        if (rev2 - drn2 > 0.001) {
+          float t2;
+          float d2 = sdSegT(p, mix(BEND, EXIT, drn2), mix(BEND, EXIT, rev2), t2);
+          vec3 g2 = mix(lin(vec3(255.0, 106.0, 43.0)), lin(vec3(220.0, 21.0, 11.0)), t2);
+          hdr += glass * g2 * exp(-d2 * 0.30) * 1.6 * pathRev * pAmp;
+        }
       }
     }
   }
 
   // --- output: one TiDB-red beam, EXIT → off-frame right, 0.60–1.0 ---------
+  // Exit: the near end lifts off EXIT and the beam sweeps right out of frame;
+  // the exit bloom follows it out.
   float outRev = smoothstep(0.60, 1.0, uProgress);
+  float outDrn = smoothstep(0.55, 0.95, uExit);
 
   float dEx = length(p - EXIT);
-  hdr += lin(vec3(255.0, 226.0, 192.0)) * (conv * 0.8 + outRev * 1.4) * 2.2 / (1.0 + dEx * dEx * 0.0035);
+  hdr += lin(vec3(255.0, 226.0, 192.0)) * (conv * 0.8 + outRev * (1.0 - outDrn) * 1.4) * 2.2 / (1.0 + dEx * dEx * 0.0035);
 
-  if (outRev > 0.001) {
+  if (outRev - outDrn > 0.001) {
     float fo = 1.0 + 0.04 * sin(uTime * 1.07 + 3.3);
+    float oAmp = drainAmp(outDrn);
+    vec2 outStart = mix(EXIT, vec2(1600.0, 470.0), outDrn);
     vec2 outEnd = mix(EXIT, vec2(1600.0, 470.0), outRev);
     // Hot warm-white core over a #DC150B body: "core = highlight, body =
     // brand red" — the neon-sign-photograph convention.
     float tO;
-    float dO = sdSegT(p, EXIT, outEnd, tO);
-    hdr += lin(vec3(255.0, 226.0, 192.0)) * exp(-dO * 0.55) * 2.2 * outRev * fo;
+    float dO = sdSegT(p, outStart, outEnd, tO);
+    hdr += lin(vec3(255.0, 226.0, 192.0)) * exp(-dO * 0.55) * 2.2 * outRev * fo * oAmp;
     hdr += lin(vec3(220.0, 21.0, 11.0)) *
-      (exp(-dO * 0.14) * 2.0 + (0.55 + 0.45 * haze) * 0.5 / (1.0 + dO * dO * 0.0008)) * outRev * fo;
+      (exp(-dO * 0.14) * 2.0 + (0.55 + 0.45 * haze) * 0.5 / (1.0 + dO * dO * 0.0008)) * outRev * fo * oAmp;
   }
 
   // --- ambient haze wash around the convergence zone -----------------------
@@ -220,7 +259,11 @@ void main() {
   // 0.5 global exposure: the band errs dark. The field is pure #000000 so the
   // section enters seamlessly from the neighbors' black — the reveal reads as
   // the previous section's background morphing, not a new surface starting.
-  hdr *= uIntensity * 0.5;
+  // The exit darkening lives here (uExit 0.55–1.0, mirror of the entry
+  // power1.in ramp) — never as a second tween on uIntensity: two scrubbed
+  // timelines writing one property fight each other.
+  float tD = clamp((uExit - 0.55) / 0.45, 0.0, 1.0);
+  hdr *= uIntensity * (1.0 - tD * tD) * 0.5;
 
   vec3 srgb = pow(aces(hdr), vec3(1.0 / 2.2));
 
@@ -262,6 +305,7 @@ function compileShader(gl: WebGLRenderingContext, type: number, src: string) {
 export function PrismBackground() {
   const rootRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const edgesRef = useRef<SVGSVGElement>(null)
   const facetRef = useRef<SVGLineElement>(null)
   const [fallback, setFallback] = useState(false)
 
@@ -311,12 +355,13 @@ export function PrismBackground() {
     const uResolution = gl.getUniformLocation(program, 'uResolution')
     const uTime = gl.getUniformLocation(program, 'uTime')
     const uProgress = gl.getUniformLocation(program, 'uProgress')
+    const uExit = gl.getUniformLocation(program, 'uExit')
     const uIntensity = gl.getUniformLocation(program, 'uIntensity')
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     // GSAP scrubs this; the shader derives all staggering from progress.
-    const u = { progress: 0, intensity: 0 }
+    const u = { progress: 0, intensity: 0, exit: 0 }
     let time = reduced ? REDUCED_TIME : 0
     let raf = 0
     let running = false
@@ -328,6 +373,7 @@ export function PrismBackground() {
       gl.uniform2f(uResolution, gl.drawingBufferWidth, gl.drawingBufferHeight)
       gl.uniform1f(uTime, time)
       gl.uniform1f(uProgress, u.progress)
+      gl.uniform1f(uExit, u.exit)
       gl.uniform1f(uIntensity, u.intensity)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
     }
@@ -385,6 +431,17 @@ export function PrismBackground() {
     } else {
       gsap.registerPlugin(ScrollTrigger)
       ctx = gsap.context(() => {
+        // The toggle must live on the timelines, not the ScrollTriggers:
+        // the trigger's onUpdate only fires on scroll deltas, but with
+        // scrub: 1 the tween keeps catching up after scrolling stops —
+        // a toggle there misses any threshold crossed during catch-up.
+        // Both timelines apply one combined predicate: the class means "the
+        // light is on", so the exit drain takes it back off.
+        const applyDone = () => {
+          section.classList.toggle(DONE_CLASS, u.progress > 0.9 && u.exit < 0.55)
+          if (!running) render()
+        }
+
         gsap
           .timeline({
             scrollTrigger: {
@@ -393,17 +450,34 @@ export function PrismBackground() {
               end: 'top 30%',
               scrub: 1,
             },
-            // The toggle must live on the timeline, not the ScrollTrigger:
-            // the trigger's onUpdate only fires on scroll deltas, but with
-            // scrub: 1 the tween keeps catching up after scrolling stops —
-            // a toggle there misses any threshold crossed during catch-up.
-            onUpdate: () => {
-              section.classList.toggle(DONE_CLASS, u.progress > 0.9)
-              if (!running) render()
-            },
+            onUpdate: applyDone,
           })
           .to(u, { progress: 1, duration: 1, ease: 'none' }, 0)
           .to(u, { intensity: 1, duration: 1, ease: 'power1.in' }, 0)
+
+        // Exit drain — a switch-off, not a rewind: the sources shut off and
+        // the last of the light travels on through the glass, left → right.
+        // Starts only once the band itself is being scrolled away ('top top'),
+        // so the drain never plays while the section is fully in view.
+        // The darkening itself is derived in-shader from uExit; this timeline
+        // never writes uIntensity (two scrubbed tweens on one property fight).
+        const exitTl = gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: 'top top',
+              end: 'bottom 20%',
+              scrub: 1,
+            },
+            onUpdate: applyDone,
+          })
+          .to(u, { exit: 1, duration: 1, ease: 'none' }, 0)
+
+        // The glass edges fade with the darkening window — a crisp outline
+        // floating on a black field reads as a leftover.
+        if (edgesRef.current) {
+          exitTl.to(edgesRef.current, { opacity: 0, duration: 0.4, ease: 'none' }, 0.6)
+        }
 
         const shimmer = facetRef.current
           ? gsap.to(facetRef.current, {
@@ -454,6 +528,7 @@ export function PrismBackground() {
       {/* Glass edges live in SVG: shaders are mediocre at razor-thin crisp
           lines. Same design frame, same cover-fit. */}
       <svg
+        ref={edgesRef}
         viewBox="0 0 1440 900"
         preserveAspectRatio="xMidYMid slice"
         className="absolute inset-0 z-[1] h-full w-full"

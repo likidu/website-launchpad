@@ -89,12 +89,13 @@ framebuffers, no textures.
 
 Uniforms:
 
-| Uniform       | Driven by                        | Meaning                                                                   |
-| ------------- | -------------------------------- | ------------------------------------------------------------------------- |
-| `uProgress`   | GSAP ScrollTrigger (scrubbed)    | Master reveal 0→1; per-beam draw-in windows are `smoothstep` slices of it |
-| `uIntensity`  | GSAP                             | Global exposure; also the reduced-luminance lever behind text             |
-| `uTime`       | rAF (only while section in view) | Haze drift, flicker, grain                                                |
-| `uResolution` | ResizeObserver                   | Cover-fit mapping of the design frame                                     |
+| Uniform       | Driven by                                     | Meaning                                                                                          |
+| ------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `uProgress`   | GSAP ScrollTrigger (scrubbed)                 | Master reveal 0→1; per-beam draw-in windows are `smoothstep` slices of it                        |
+| `uExit`       | GSAP ScrollTrigger (scrubbed, second trigger) | Master drain 0→1; per-beam drain windows are `smoothstep` slices of it; also folds into exposure |
+| `uIntensity`  | GSAP                                          | Global exposure; also the reduced-luminance lever behind text                                    |
+| `uTime`       | rAF (only while section in view)              | Haze drift, flicker, grain                                                                       |
+| `uResolution` | ResizeObserver                                | Cover-fit mapping of the design frame                                                            |
 
 ---
 
@@ -254,6 +255,71 @@ No copy phase — the section's content is server-rendered HTML that is always
 visible. The background performs _behind_ it; nothing content-critical waits
 on the animation.
 
+### Exit — the drain (review, 2026-08-06)
+
+The reveal has always been one-sided: scroll down into the band and the light
+builds, but keep scrolling and the section carries its full end state out of
+the viewport. The exit closes the loop — as the band scrolls out the top, the
+light drains away and the field returns to pure `#000000` before handing off
+to the `bg-gradient-dark-bottom` section below, mirroring the darkness the
+band entered from.
+
+The choreography is a **switch-off, not a rewind**. Scrubbing backwards
+already plays the reveal in reverse (beams retract left, away from the
+prism). The exit is a different, forward-moving event: the sources shut off
+and the last of the light travels on through the glass in its direction of
+travel. Everything drains **left → right**:
+
+| uExit       | State                                                                                                                                                                                                       |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0 – 0.53    | The input fan (the five left-hand beams) drains: each beam's tail lifts off its off-frame origin and sweeps right toward the prism. Same stagger slices and order as entry — first lit, first to leave.     |
+| 0.40 – 0.68 | The glass unwinds: the entry caustic dims as the last input lands, the internal ENTRY → BEND → EXIT path drains along its own direction, and the interior gradient eases back to its idle 0.05.             |
+| 0.55 – 0.95 | The red output beam drains: its near end lifts off EXIT and sweeps right until the beam has left the frame at its off-frame tip. The exit bloom follows it out.                                             |
+| 0.55 – 1.0  | The page goes dark: global exposure eases to zero on the mirror of the entry ramp, and the SVG glass edges fade with it — an outline floating on a black field would read as a leftover. Back to `#000000`. |
+
+**Trigger.** A second scrubbed timeline on the same section, driving a new
+`uExit` uniform 0 → 1:
+
+```
+trigger: the #proof section (same element)
+start:   'top top'      // the drain begins the moment the band starts leaving
+end:     'bottom 20%'
+scrub:   1              // same catch-up weight as the entry
+```
+
+The first cut started at `'bottom 78%'` and read as switching off too early —
+the drain played while the whole band was still comfortably on screen (review,
+2026-08-06). Anchoring the start at `'top top'` ties the exit to the band
+itself being scrolled away: the light only starts leaving once the section
+does. Two binding rules: the drain never plays while the section is fully in
+view, and it completes (field fully black) before the band's bottom edge
+leaves the viewport.
+
+**Mechanics.**
+
+- Each beam becomes a **two-ended segment**: the draw end keeps following
+  `uProgress` (untouched), the drain end follows `uExit` — visible span
+  `mix(origin, ENTRY, e_i) → mix(origin, ENTRY, r_i)`, and the beam is
+  skipped once `e_i ≥ r_i`. Same construction for the output beam along
+  EXIT → tip. Because the two ends are independent, an entry/exit overlap
+  would degrade gracefully — and with the exit anchored at `'top top'`
+  (strictly after the entry's `'top 30%'` end), overlap can't occur on any
+  viewport; the robustness comes free.
+- Per-beam amplitude fades over the last stretch of each drain window so a
+  draining beam dissolves instead of pinching down to a bright dot at the
+  prism face.
+- **The exit darkening lives in the shader, not in a second tween on
+  `uIntensity`.** Exposure becomes `uIntensity · (1 − ease(uExit)) · 0.5`.
+  Two scrubbed timelines writing one property fight each other (last write
+  wins per refresh, and the second tween captures a stale start value), so
+  the entry timeline stays the sole owner of `uIntensity`.
+- The SVG edge fade is an opacity tween on the overlay, placed in the exit
+  timeline over the darkening window (uExit 0.6 → 1.0).
+- rAF / `uTime` lifecycle is untouched — the existing visibility trigger
+  (`top bottom` → `bottom top`) already spans the whole exit.
+- Everything is scrubbed, so scrolling back up re-lights the band in reverse
+  drain order — symmetric with how the entry has always behaved.
+
 ### Ambient motion
 
 `uTime` advances only while the section is on screen (ScrollTrigger
@@ -280,17 +346,27 @@ reports state, and content styles itself.
 Paths that render the end state directly set the class immediately: reduced
 motion, the no-WebGL poster, and context loss.
 
+The exit drain (review, 2026-08-06) drives the same class the other way:
+`prism-done` comes off as the drain reaches the output beam, so the white
+paragraph relaxes back to carbon gray while the light around it leaves. Both
+timelines' `onUpdate` apply one combined predicate —
+`progress > 0.9 && exit < 0.55` — and the toggle stays on the timelines,
+never the triggers, for the catch-up reason above.
+
 ### Reduced motion
 
-`prefers-reduced-motion: reduce` renders **one frame** at `uProgress = 1` with
-`uTime` frozen — no rAF loop, no ScrollTrigger. Full end-state, zero motion
-(`prism-done` set immediately).
+`prefers-reduced-motion: reduce` renders **one frame** at `uProgress = 1`,
+`uExit = 0`, with `uTime` frozen — no rAF loop, no ScrollTrigger. Full
+end-state, zero motion (`prism-done` set immediately). No exit drain either:
+the still frame simply scrolls away lit.
 
 ### Fallbacks
 
 - **No WebGL / context lost:** swap in a static poster — a PNG export of the
   shader's end state, `absolute inset-0`, `object-fit: cover`. The same image
-  serves as the pre-hydration placeholder so the canvas doesn't pop in.
+  serves as the pre-hydration placeholder so the canvas doesn't pop in. The
+  poster has no exit drain — it's a static end state and scrolls away lit,
+  which is acceptable for a fallback path.
 - **Low-end mobile (below `md`):** if profiling shows problems, drop haze to
   1 octave first; the nuclear option is serving the poster only. Content is
   unaffected either way.
