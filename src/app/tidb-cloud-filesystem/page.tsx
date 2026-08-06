@@ -14,7 +14,9 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { CountUp } from '@/components/ui/CountUp'
+import { SlideIn } from '@/components/ui/SlideIn'
 import { Command } from './Command'
+import { DataPlaneDiagram } from './DataPlaneDiagram'
 
 // Internal-review annotations and mechanism captions from the "1st cut" design.
 // Both default on for the 2026-08-10 internal review; flip off for launch.
@@ -522,117 +524,6 @@ function HeroCodePanel() {
   )
 }
 
-function DataPlaneDiagram() {
-  return (
-    <svg
-      viewBox="0 0 900 224"
-      xmlns="http://www.w3.org/2000/svg"
-      className="mb-16 block h-auto w-full"
-      role="img"
-      aria-label="Three ephemeral runtimes above mount one durable workspace below"
-    >
-      <text x="0" y="12" fontSize="10" letterSpacing="0.6" className="font-mono fill-carbon-700">
-        EXECUTION — EPHEMERAL
-      </text>
-      <rect
-        x="0"
-        y="28"
-        width="280"
-        height="54"
-        rx="9"
-        strokeDasharray="3,3"
-        className="fill-white/[0.04] stroke-carbon-800"
-      />
-      <text x="18" y="50" fontSize="10" className="font-mono fill-carbon-400">
-        SANDBOX A
-      </text>
-      <text x="18" y="69" fontSize="12" className="font-sans font-medium fill-white">
-        clones, edits, builds
-      </text>
-      <text
-        x="262"
-        y="50"
-        textAnchor="end"
-        fontSize="9.5"
-        className="font-mono fill-brand-red-primary"
-      >
-        ends
-      </text>
-      <rect
-        x="310"
-        y="28"
-        width="280"
-        height="54"
-        rx="9"
-        strokeDasharray="3,3"
-        className="fill-white/[0.04] stroke-carbon-800"
-      />
-      <text x="328" y="50" fontSize="10" className="font-mono fill-carbon-400">
-        SANDBOX B
-      </text>
-      <text x="328" y="69" fontSize="12" className="font-sans font-medium fill-white">
-        continues the task
-      </text>
-      <text
-        x="572"
-        y="50"
-        textAnchor="end"
-        fontSize="9.5"
-        className="font-mono fill-brand-red-primary"
-      >
-        ends
-      </text>
-      <rect
-        x="620"
-        y="28"
-        width="280"
-        height="54"
-        rx="9"
-        strokeDasharray="3,3"
-        className="fill-white/[0.04] stroke-carbon-800"
-      />
-      <text x="638" y="50" fontSize="10" className="font-mono fill-carbon-400">
-        CI JOB / REVIEWER
-      </text>
-      <text x="638" y="69" fontSize="12" className="font-sans font-medium fill-white">
-        reads without mounting
-      </text>
-      <line x1="140" y1="82" x2="140" y2="104" strokeWidth="1" className="stroke-carbon-800" />
-      <line x1="450" y1="82" x2="450" y2="104" strokeWidth="1" className="stroke-carbon-800" />
-      <line x1="760" y1="82" x2="760" y2="104" strokeWidth="1" className="stroke-carbon-800" />
-      <line x1="140" y1="104" x2="760" y2="104" strokeWidth="1" className="stroke-carbon-800" />
-      <line x1="450" y1="104" x2="450" y2="136" strokeWidth="1" className="stroke-carbon-800" />
-      <text x="462" y="122" fontSize="9" className="font-mono fill-carbon-700">
-        same filesystem token
-      </text>
-      <text x="0" y="128" fontSize="10" letterSpacing="0.6" className="font-mono fill-carbon-700">
-        STATE — DURABLE
-      </text>
-      <rect
-        x="0"
-        y="136"
-        width="900"
-        height="80"
-        rx="11"
-        strokeWidth="1.5"
-        className="fill-brand-red-primary/[0.07] stroke-brand-red-primary"
-      />
-      <text
-        x="450"
-        y="168"
-        textAnchor="middle"
-        fontSize="15"
-        className="font-sans font-bold fill-white"
-      >
-        TiDB Cloud Filesystem — one workspace
-      </text>
-      <text x="450" y="192" textAnchor="middle" fontSize="10" className="font-mono fill-carbon-400">
-        source tree · git state · uncommitted work · test output · artifacts
-      </text>
-    </svg>
-  )
-}
-
 export default function TidbCloudFilesystemPage() {
   return (
     <>
@@ -682,131 +573,143 @@ export default function TidbCloudFilesystemPage() {
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {/* Consistency modes */}
-              <div className="flex flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
-                <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
-                  Consistency modes
-                </p>
-                {/* title-case-ignore */}
-                <h3 className="text-h3-lg font-bold">You choose what a concurrent reader sees.</h3>
-                <p className="flex-1 text-body-md text-carbon-400">
-                  Writeback, close-sync or write-sync, set per workspace. Nobody builds a visibility
-                  guarantee for a store that only one machine can hold — which is why nobody else
-                  can answer this question.
-                </p>
-                <div className="grid gap-4 border-t border-white/10 pt-[22px]">
-                  <div className="grid grid-cols-[82px_1fr_86px] gap-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                    <span>MODE</span>
-                    <span>WRITE COMMITS</span>
-                    <span className="text-right">READER SEES</span>
-                  </div>
-                  {consistencyModes.map((m) => (
-                    <div key={m.mode} className="grid grid-cols-[82px_1fr_86px] items-center gap-3">
-                      <span className="font-mono text-[11px] text-white">{m.mode}</span>
-                      <span className="relative h-0.5 bg-white/[0.12]">
-                        <span
-                          className={`${m.travelClass} absolute -top-[3.5px] h-[9px] w-[9px] rounded-full bg-brand-red-primary`}
-                        />
-                      </span>
-                      <span
-                        className={`${m.seenClass} rounded border border-white/[0.12] py-1 text-center font-mono text-[9px]`}
-                      >
-                        {m.seen}
-                      </span>
-                    </div>
-                  ))}
-                  <p className="mt-1 font-mono text-[10px] leading-[1.6] text-carbon-700">
-                    Fastest write at the bottom, strongest guarantee at the top.
+              <SlideIn direction="up">
+                <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
+                    Consistency modes
                   </p>
+                  {/* title-case-ignore */}
+                  <h3 className="text-h3-lg font-bold">
+                    You choose what a concurrent reader sees.
+                  </h3>
+                  <p className="flex-1 text-body-md text-carbon-400">
+                    Writeback, close-sync or write-sync, set per workspace. Nobody builds a
+                    visibility guarantee for a store that only one machine can hold — which is why
+                    nobody else can answer this question.
+                  </p>
+                  <div className="grid gap-4 border-t border-white/10 pt-[22px]">
+                    <div className="grid grid-cols-[82px_1fr_86px] gap-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                      <span>MODE</span>
+                      <span>WRITE COMMITS</span>
+                      <span className="text-right">READER SEES</span>
+                    </div>
+                    {consistencyModes.map((m) => (
+                      <div
+                        key={m.mode}
+                        className="grid grid-cols-[82px_1fr_86px] items-center gap-3"
+                      >
+                        <span className="font-mono text-[11px] text-white">{m.mode}</span>
+                        <span className="relative h-0.5 bg-white/[0.12]">
+                          <span
+                            className={`${m.travelClass} absolute -top-[3.5px] h-[9px] w-[9px] rounded-full bg-brand-red-primary`}
+                          />
+                        </span>
+                        <span
+                          className={`${m.seenClass} rounded border border-white/[0.12] py-1 text-center font-mono text-[9px]`}
+                        >
+                          {m.seen}
+                        </span>
+                      </div>
+                    ))}
+                    <p className="mt-1 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                      Fastest write at the bottom, strongest guarantee at the top.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </SlideIn>
 
               {/* Git-aware workspace */}
-              <div className="flex flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
-                <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
-                  Git-aware workspace
-                </p>
-                {/* title-case-ignore */}
-                <h3 className="text-h3-lg font-bold">
-                  A resumed workspace still has its git state.
-                </h3>
-                <p className="flex-1 text-body-md text-carbon-400">
-                  Not the committed tree a fresh clone gives you — the clean tree as baseline, the
-                  agent&apos;s uncommitted changes as an overlay, and a pack for objects it created.
-                  That is the difference between a folder and a workspace.
-                </p>
-                <div className="grid gap-2.5 border-t border-white/10 pt-[22px]">
-                  <p className="mb-1 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                    WHAT COMES BACK, IN ORDER
+              <SlideIn direction="up" delay={70}>
+                <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
+                    Git-aware workspace
                   </p>
-                  {gitBands.map((band) => (
-                    <div
-                      key={band.name}
-                      className={`tdc-band rounded-md border px-3.5 py-3 ${band.className}`}
-                      style={band.delay ? { animationDelay: band.delay } : undefined}
-                    >
-                      <p className="font-mono text-[11px] text-white">{band.name}</p>
-                      <p
-                        className={`mt-1 font-mono text-[10px] ${
-                          band.delay ? 'text-carbon-400' : 'text-carbon-700'
-                        }`}
+                  {/* title-case-ignore */}
+                  <h3 className="text-h3-lg font-bold">
+                    A resumed workspace still has its git state.
+                  </h3>
+                  <p className="flex-1 text-body-md text-carbon-400">
+                    Not the committed tree a fresh clone gives you — the clean tree as baseline, the
+                    agent&apos;s uncommitted changes as an overlay, and a pack for objects it
+                    created. That is the difference between a folder and a workspace.
+                  </p>
+                  <div className="grid gap-2.5 border-t border-white/10 pt-[22px]">
+                    <p className="mb-1 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                      WHAT COMES BACK, IN ORDER
+                    </p>
+                    {gitBands.map((band) => (
+                      <div
+                        key={band.name}
+                        className={`tdc-band rounded-md border px-3.5 py-3 ${band.className}`}
+                        style={band.delay ? { animationDelay: band.delay } : undefined}
                       >
-                        {band.caption}
-                      </p>
-                    </div>
-                  ))}
-                  <p className="mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
-                    <code>tdc fs-git clone-git-workspace</code> · <code>hydrate-git-workspace</code>{' '}
-                    · <code>add-git-worktree</code>
-                  </p>
+                        <p className="font-mono text-[11px] text-white">{band.name}</p>
+                        <p
+                          className={`mt-1 font-mono text-[10px] ${
+                            band.delay ? 'text-carbon-400' : 'text-carbon-700'
+                          }`}
+                        >
+                          {band.caption}
+                        </p>
+                      </div>
+                    ))}
+                    <p className="mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                      <code>tdc fs-git clone-git-workspace</code> ·{' '}
+                      <code>hydrate-git-workspace</code> · <code>add-git-worktree</code>
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </SlideIn>
 
               {/* Rebuildable vs persistent */}
-              <div className="flex flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
-                <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
-                  Rebuildable vs persistent
-                </p>
-                {/* title-case-ignore */}
-                <h3 className="text-h3-lg font-bold">Keep the outcome. Drop the noise.</h3>
-                <p className="flex-1 text-body-md text-carbon-400 [&_code]:font-mono">
-                  A Node build is the stress test: a huge <code>node_modules</code>,{' '}
-                  <code>.tsbuildinfo</code> churning, <code>dist</code> regenerating every run. None
-                  of it is worth persisting. The test results, failure logs and patches are.
-                </p>
-                <div className="grid grid-cols-2 gap-[18px] border-t border-white/10 pt-[22px]">
-                  <div className="grid content-start gap-2">
-                    <p className="mb-0.5 font-mono text-[10px] tracking-[0.05em] text-brand-red-primary">
-                      PERSISTED
-                    </p>
-                    {persistedFiles.map((file, i) => (
-                      <span
-                        key={file}
-                        className="tdc-keep border-l-2 border-brand-red-primary pl-[9px] font-mono text-[11px] text-white"
-                        style={{ animationDelay: `${i * 0.12}s` }}
-                      >
-                        {file}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="grid content-start gap-2">
-                    <p className="mb-0.5 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                      LOCAL-ONLY
-                    </p>
-                    {localOnlyFiles.map((file, i) => (
-                      <span
-                        key={file}
-                        className="tdc-drop border-l-2 border-carbon-800 pl-[9px] font-mono text-[11px] text-carbon-400"
-                        style={{ animationDelay: `${i * 0.12}s` }}
-                      >
-                        {file}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="col-span-2 mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
-                    The split follows the project&apos;s own shape, not a config file you maintain.
+              <SlideIn direction="up" delay={140}>
+                <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
+                    Rebuildable vs persistent
                   </p>
+                  {/* title-case-ignore */}
+                  <h3 className="text-h3-lg font-bold">Keep the outcome. Drop the noise.</h3>
+                  <p className="flex-1 text-body-md text-carbon-400 [&_code]:font-mono">
+                    A Node build is the stress test: a huge <code>node_modules</code>,{' '}
+                    <code>.tsbuildinfo</code> churning, <code>dist</code> regenerating every run.
+                    None of it is worth persisting. The test results, failure logs and patches are.
+                  </p>
+                  <div className="grid grid-cols-2 gap-[18px] border-t border-white/10 pt-[22px]">
+                    <div className="grid content-start gap-2">
+                      <p className="mb-0.5 font-mono text-[10px] tracking-[0.05em] text-brand-red-primary">
+                        PERSISTED
+                      </p>
+                      {persistedFiles.map((file, i) => (
+                        <span
+                          key={file}
+                          className="tdc-keep border-l-2 border-brand-red-primary pl-[9px] font-mono text-[11px] text-white"
+                          style={{ animationDelay: `${i * 0.12}s` }}
+                        >
+                          {file}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="grid content-start gap-2">
+                      <p className="mb-0.5 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                        LOCAL-ONLY
+                      </p>
+                      {localOnlyFiles.map((file, i) => (
+                        <span
+                          key={file}
+                          className="tdc-drop border-l-2 border-carbon-800 pl-[9px] font-mono text-[11px] text-carbon-400"
+                          style={{ animationDelay: `${i * 0.12}s` }}
+                        >
+                          {file}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="col-span-2 mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                      The split follows the project&apos;s own shape, not a config file you
+                      maintain.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </SlideIn>
             </div>
           </div>
         </section>

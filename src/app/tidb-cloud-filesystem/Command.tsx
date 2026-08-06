@@ -37,8 +37,8 @@ export function Command({ cmd, children }: CommandProps) {
         className={cn(
           'absolute right-2 top-0.5 rounded border bg-black/40 px-2 py-0.5',
           'font-mono text-[10px] tracking-[0.04em] text-carbon-400',
-          'cursor-pointer opacity-0 transition-[opacity,border-color] duration-150',
-          'group-hover:opacity-100 focus-visible:opacity-100',
+          'cursor-pointer opacity-0 transition-[opacity,border-color,transform] duration-150',
+          'active:scale-[0.97] group-hover:opacity-100 focus-visible:opacity-100',
           'hover:border-brand-red-primary hover:text-white',
           copied ? 'border-brand-red-primary' : 'border-white/[0.16]'
         )}
