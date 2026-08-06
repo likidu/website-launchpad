@@ -324,6 +324,22 @@ const fitRows: [string, string][] = [
   ['Resume, snapshot or fork work inside one sandbox platform', "That platform's own persistence"],
 ]
 
+/** Official Kimi wordmark (kimi.com), currentColor so it takes the page's text color. */
+function KimiLogo({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 96 32"
+      fill="currentColor"
+      role="img"
+      aria-label="Kimi"
+      className={className}
+    >
+      <path d="M35.768 31.329c0 .37.3.671.67.671h4.305c.371 0 .672-.3.672-.671V.67c0-.37-.3-.671-.672-.671H36.44c-.37 0-.671.3-.671.671zm54.584 0c0 .37.3.671.67.671h4.305c.371 0 .672-.3.672-.671V.67c0-.37-.3-.671-.672-.671h-4.304c-.37 0-.671.3-.671.671zM73.256 0a.67.67 0 0 0-.652.512l-6.366 26.1c-.106.428-.607.428-.71 0L59.159.512A.67.67 0 0 0 58.511 0H47.725c-.37 0-.668.3-.668.671V31.33c0 .37.3.671.67.671h4.781c.37 0 .671-.292.671-.662V5.554c0-.515.604-.622.726-.127l6.358 26.06a.67.67 0 0 0 .653.513h9.931c.31 0 .58-.212.653-.512L77.855 5.43c.122-.495.726-.388.726.127v25.772c0 .37.3.671.671.671h4.78c.371 0 .672-.3.672-.671V.67c0-.37-.3-.671-.671-.671zM15.279 14.837 28.264 1.133A.671.671 0 0 0 27.777 0h-6.043a.67.67 0 0 0-.477.199L6.374 15.223c-.231.234-.573.025-.573-.35V.672c0-.37-.3-.671-.671-.671H.67a.67.67 0 0 0-.67.67V31.33c0 .37.3.671.671.671H5.13c.37 0 .671-.3.671-.671v-6.114a.5.5 0 0 1 .13-.35l4.594-4.69a.293.293 0 0 1 .386-.045l12.286 9.305c1.796 1.245 4.083 2.06 6.178 2.401a.645.645 0 0 0 .743-.648v-5.537a.7.7 0 0 0-.562-.677c-1.215-.262-2.565-.758-3.59-1.468L15.332 15.58c-.22-.152-.248-.544-.052-.744" />
+    </svg>
+  )
+}
+
 function ReviewNote({ text, light = false }: { text: string; light?: boolean }) {
   if (!SHOW_REVIEW_NOTES) return null
   return (
@@ -636,9 +652,10 @@ export default function TidbCloudFilesystemPage() {
         <section id="proof" className="bg-bg-primary py-20">
           <div className="mx-auto max-w-container px-4 md:px-8 lg:px-16">
             <p className="mb-8 font-mono text-[15px] text-carbon-400">Proof at scale</p>
+            <KimiLogo className="mb-6 h-7 w-auto text-white" />
             {/* title-case-ignore */}
-            <h2 className="mb-12 max-w-[820px] text-pretty text-h2-mb font-bold leading-tight tracking-[-0.02em] md:text-h2-sm">
-              Workspace continuity, running at Kimi&apos;s agent scale.
+            <h2 className="mb-12 max-w-[820px] text-pretty text-h2-mb font-bold leading-tight tracking-[-0.02em] text-carbon-400 md:text-h2-sm">
+              Workspace continuity, running in production.
             </h2>
             <div className="grid grid-cols-1 items-end gap-12 border-b border-border-primary pb-[36px] lg:grid-cols-2">
               <div>
@@ -646,22 +663,23 @@ export default function TidbCloudFilesystemPage() {
                   <CountUp value="70,000+" />
                 </p>
                 <p className="mt-[14px] font-mono text-[13px] text-carbon-400">
-                  file systems in production at Kimi (Moonshot AI)
+                  file systems in production behind Kimi Work (Moonshot AI)
                 </p>
               </div>
               <div>
-                <p className="mb-[14px] max-w-[560px] text-pretty text-body-lg text-carbon-400">
-                  TiDB Cloud Filesystem holds the coding-agent workspace behind Kimi&apos;s agent
-                  platform, which is why the runtimes that execute those agents stay disposable.
+                <p className="max-w-[560px] text-pretty text-body-lg text-carbon-400">
+                  TiDB Cloud Filesystem holds the agent workspaces behind Kimi Work, Moonshot
+                  AI&apos;s desktop AI agent for knowledge workers — which is why the runtimes that
+                  execute those agents stay disposable.
                 </p>
-                <p className="font-mono text-[11px] tracking-[0.04em] text-carbon-700">
-                  This is scale of use — not a customer result, and not a performance claim.
-                </p>
+                <div className="mt-5">
+                  <SecondaryButton href="#">Read the Kimi Work story</SecondaryButton>
+                </div>
               </div>
             </div>
             {SHOW_REVIEW_NOTES && (
               <div className="mt-6">
-                <ReviewNote text="Brand-level authorization (Kimi · Moonshot AI) due 2026-08-07 and not ours to grant. Built so permission strength is a text swap, not a layout change: no logo lockup, no story CTA, no outcome metric. Confirm the 70,000+ figure and that it belongs to Kimi Work." />
+                <ReviewNote text="Upgraded 2026-08-05 to the full-strength treatment: Kimi wordmark, Kimi Work naming, story CTA (placeholder link), scale-of-use disclaimer dropped. Kimi brand authorization is still due 2026-08-07 and not ours to grant — if it slips, drop the logo and CTA and restore the disclaimer; that reversal is a text swap, not a layout change. Confirm the 70,000+ figure belongs to Kimi Work." />
               </div>
             )}
           </div>
