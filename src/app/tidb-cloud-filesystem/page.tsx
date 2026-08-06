@@ -17,6 +17,7 @@ import { CountUp } from '@/components/ui/CountUp'
 import { SlideIn } from '@/components/ui/SlideIn'
 import { Command } from './Command'
 import { DataPlaneDiagram } from './DataPlaneDiagram'
+import { FitScenarios } from './FitScenarios'
 import { HeroShade } from './HeroShade'
 import { LoopStrip } from './LoopStrip'
 import { PrismBackground } from './PrismBackground'
@@ -331,20 +332,13 @@ const gitBands: { n: string; name: string; caption: string; className: string }[
 const persistedFiles = ['source', 'lock file', 'patches', 'test results', 'failure logs']
 const localOnlyFiles = ['node_modules', '.tsbuildinfo', 'dist', '.turbo', 'coverage']
 
-const fitChecklist = [
-  'a sandbox or ephemeral job ends before the task is done',
-  'each run clones and prepares the same repository again',
-  'several agents need the same repository or document set at once',
-  'work moves between E2B, Modal, Daytona, CI or a local tool',
-]
-
 const fitRows: [string, string][] = [
   ['A durable disk attached to one workload', 'Block storage'],
-  ['A shared POSIX filesystem for compute clients in one cloud', 'A network filesystem'],
+  ['A shared POSIX filesystem for compute clients in one cloud', 'Network file storage'],
   ['Objects, artifacts, datasets, backups or archives', 'Object storage'],
-  ['Committed source history, branches, review and merge', 'Git hosting'],
+  ['Committed source history, branches and merges', 'Git hosting'],
   ['What an agent remembers across conversations', 'Agent memory'],
-  ['Resume, snapshot or fork work inside one sandbox platform', "That platform's own persistence"],
+  ['Snapshots and forks of work inside one sandbox platform', 'Platform-native persistence'],
 ]
 
 /** Official Kimi wordmark (kimi.com), currentColor so it takes the page's text color. */
@@ -746,59 +740,45 @@ export default function TidbCloudFilesystemPage() {
             <h2 className="mb-12 max-w-[820px] text-pretty text-h2-mb font-bold leading-tight tracking-[-0.02em] md:text-h2-sm">
               Start with the boundary your state has to cross.
             </h2>
-            <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-2">
-              <div className="rounded-xl border border-brand-red-primary bg-brand-red-primary/[0.06] px-[26px] py-7">
-                <p className="mb-[18px] text-h3-sm font-bold">
-                  You&apos;re in the right place if —
+            <div className="mb-9 border-l-2 border-brand-red-primary pl-[18px]">
+              <p className="text-h3-sm font-bold">You&apos;re in the right place if —</p>
+            </div>
+            <FitScenarios />
+            <div className="mt-[72px] border-t border-border-primary pt-11">
+              <p className="mx-auto mb-7 max-w-[660px] text-center text-body-md text-carbon-400">
+                Several kinds of storage persist real work.
+                <br />
+                Which one is right depends on what has to survive, and what it has to cross.
+              </p>
+              <div className="mx-auto grid max-w-[1000px] grid-cols-[1.4fr_1fr]">
+                <p className="border-b border-border-primary px-6 py-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                  WHAT YOU NEED TO KEEP
                 </p>
-                <div className="grid gap-3.5">
-                  {fitChecklist.map((item) => (
-                    <p
-                      key={item}
-                      className="grid grid-cols-[18px_1fr] gap-2.5 text-body-md text-white"
-                    >
-                      <span className="font-mono text-brand-red-primary">→</span>
-                      <span>{item}</span>
-                    </p>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="mb-6 max-w-[600px] text-body-md text-carbon-400">
-                  If that&apos;s not quite your situation, this is the short map of what to reach
-                  for instead. Several kinds of storage persist real work; which one is right
-                  depends on what has to survive and what it has to cross.
+                <p className="border-b border-border-primary px-6 py-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                  USE
                 </p>
-                <div className="grid grid-cols-[1.4fr_1fr]">
-                  <p className="border-b border-border-primary py-3 pr-4 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                    YOU NEED TO KEEP
-                  </p>
-                  <p className="border-b border-border-primary py-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                    USE
-                  </p>
-                  {fitRows.map(([need, use]) => (
+                {fitRows.map(([need, use], index) => {
+                  const divider = index < fitRows.length - 1 ? 'border-b border-border-primary' : ''
+                  return (
                     <div key={use} className="contents">
-                      <p className="border-b border-border-primary py-3.5 pr-4 text-[15px] font-light text-carbon-400">
+                      <p className={`px-6 py-4 text-[15px] font-light text-carbon-400 ${divider}`}>
                         {need}
                       </p>
-                      <p className="border-b border-border-primary py-3.5 text-[15px] font-regular text-white">
+                      <p className={`px-6 py-4 text-[15px] font-regular text-white ${divider}`}>
                         {use}
                       </p>
                     </div>
-                  ))}
-                  <p className="border-b border-brand-red-primary bg-brand-red-primary/[0.07] py-4 pr-4 text-[15px] font-regular text-white">
-                    One active working directory crossing runtime, session, agent or reviewer
-                    boundaries
-                  </p>
-                  <p className="border-b border-brand-red-primary bg-brand-red-primary/[0.07] py-4 font-mono text-sm font-regular text-brand-red-primary">
-                    TiDB Cloud Filesystem
-                  </p>
-                </div>
+                  )
+                })}
+                <p className="border-y border-brand-red-primary bg-brand-red-primary/[0.09] px-6 py-[26px] text-[19px] font-regular leading-[1.35] text-pretty text-white">
+                  One active working directory crossing runtime, session, agent or reviewer
+                  boundaries
+                </p>
+                <p className="border-y border-brand-red-primary bg-brand-red-primary/[0.09] px-6 py-[26px] font-mono text-[17px] leading-[1.35] text-brand-red-primary">
+                  TiDB Cloud Filesystem
+                </p>
               </div>
             </div>
-            <p className="mt-14 max-w-[760px] text-pretty text-body-2xl font-regular text-white">
-              If that&apos;s you, what&apos;s left is the limits. Here they are.
-            </p>
           </div>
         </section>
 
