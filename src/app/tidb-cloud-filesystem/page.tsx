@@ -17,6 +17,7 @@ import { CountUp } from '@/components/ui/CountUp'
 import { SlideIn } from '@/components/ui/SlideIn'
 import { Command } from './Command'
 import { DataPlaneDiagram } from './DataPlaneDiagram'
+import { HeroShade } from './HeroShade'
 import { LoopStrip } from './LoopStrip'
 import { PrismBackground } from './PrismBackground'
 
@@ -467,9 +468,10 @@ export default function TidbCloudFilesystemPage() {
 
       <main className="bg-bg-primary pt-20">
         {/* 01 Hero */}
-        <section className="bg-bg-primary pb-24 pt-[72px]">
-          <div className="mx-auto grid max-w-container grid-cols-1 items-start gap-14 px-4 md:px-8 lg:grid-cols-2 lg:px-16">
-            <div>
+        <section className="relative isolate overflow-hidden bg-bg-primary pb-24 pt-[72px]">
+          <HeroShade />
+          <div className="relative z-10 mx-auto grid max-w-container grid-cols-1 items-start gap-14 px-4 md:px-8 lg:grid-cols-2 lg:px-16">
+            <div data-shade-dim>
               <div className="mb-7 flex items-center gap-3">
                 <span className="font-mono text-[13px] text-carbon-400">TiDB Cloud Filesystem</span>
                 <Badge variant="secondary">Technical Preview</Badge>
@@ -489,7 +491,9 @@ export default function TidbCloudFilesystemPage() {
                 </SecondaryButton>
               </div>
             </div>
-            <HeroCodePanel />
+            <div data-shade-block>
+              <HeroCodePanel />
+            </div>
           </div>
         </section>
 
