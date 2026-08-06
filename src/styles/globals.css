@@ -734,6 +734,23 @@
 
 /* Bands enter in sequence but exit together — only the entrance carries the
    order, so the direction reads unambiguously at any point in the loop. */
+/* Whole-card progress fill for the loop strip's active card. */
+@keyframes tdc-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.tdc-fill {
+  animation-name: tdc-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  transform-origin: left;
+}
+
 @keyframes tdc-band-a {
   0%,
   2% {

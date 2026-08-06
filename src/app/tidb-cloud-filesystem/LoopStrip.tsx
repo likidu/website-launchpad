@@ -138,7 +138,7 @@ export function LoopStrip({ showMechanisms = true }: { showMechanisms?: boolean 
       <div
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
-        className="hidden overflow-hidden lg:-mx-16 lg:block"
+        className="hidden overflow-hidden lg:block"
       >
         <div className="flex items-stretch justify-between gap-2">
           {STEPS.map((step, index) => {
@@ -161,6 +161,15 @@ export function LoopStrip({ showMechanisms = true }: { showMechanisms?: boolean 
                   transition: 'flex-basis 600ms ease-in-out',
                 }}
               >
+                {/* Auto-advance progress — whole-card fill, slightly brighter
+                    than the card's red tint, behind the content layers */}
+                {isActive && autoRunning && (
+                  <span
+                    key={`${cycle}-${active}`}
+                    className="tdc-fill absolute inset-y-0 left-0 w-full bg-gradient-to-r from-brand-red-primary/[0.04] to-brand-red-primary/[0.18]"
+                    style={{ animationDuration: `${INTERVAL_MS}ms` }}
+                  />
+                )}
                 {/* Collapsed sliver */}
                 <div
                   className="absolute inset-0 flex flex-col items-center gap-4 py-5"
@@ -207,16 +216,6 @@ export function LoopStrip({ showMechanisms = true }: { showMechanisms?: boolean 
                       </p>
                     )}
                   </div>
-                  {/* Auto-advance progress */}
-                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/[0.08]">
-                    {isActive && autoRunning && (
-                      <span
-                        key={`${cycle}-${active}`}
-                        className="animate-tab-progress absolute inset-y-0 left-0 bg-brand-red-primary"
-                        style={{ animationDuration: `${INTERVAL_MS}ms` }}
-                      />
-                    )}
-                  </span>
                 </div>
               </button>
             )
