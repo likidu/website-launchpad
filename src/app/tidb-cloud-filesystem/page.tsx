@@ -681,11 +681,6 @@ export default function TidbCloudFilesystemPage() {
                 </div>
               </div>
             </div>
-            {SHOW_REVIEW_NOTES && (
-              <div className="mt-6">
-                <ReviewNote text="Upgraded 2026-08-05 to the full-strength treatment: Kimi wordmark, Kimi Work naming, story CTA (placeholder link), scale-of-use disclaimer dropped. Kimi brand authorization is still due 2026-08-07 and not ours to grant — if it slips, drop the logo and CTA and restore the disclaimer; that reversal is a text swap, not a layout change. Confirm the 70,000+ figure belongs to Kimi Work." />
-              </div>
-            )}
           </div>
         </section>
 
