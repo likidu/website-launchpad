@@ -732,129 +732,6 @@
    the three consistency-mode dots arrive at 18% / 46% / 76% of one shared 6s
    cycle (fastest guarantee arrives first). */
 
-@keyframes tdc-travel-a {
-  0% {
-    left: 0;
-    opacity: 0;
-  }
-  4% {
-    opacity: 1;
-  }
-  18% {
-    left: calc(100% - 9px);
-  }
-  92% {
-    left: calc(100% - 9px);
-    opacity: 1;
-  }
-  97%,
-  100% {
-    opacity: 0;
-    left: calc(100% - 9px);
-  }
-}
-@keyframes tdc-travel-b {
-  0% {
-    left: 0;
-    opacity: 0;
-  }
-  4% {
-    opacity: 1;
-  }
-  46% {
-    left: calc(100% - 9px);
-  }
-  92% {
-    left: calc(100% - 9px);
-    opacity: 1;
-  }
-  97%,
-  100% {
-    opacity: 0;
-    left: calc(100% - 9px);
-  }
-}
-@keyframes tdc-travel-c {
-  0% {
-    left: 0;
-    opacity: 0;
-  }
-  4% {
-    opacity: 1;
-  }
-  76% {
-    left: calc(100% - 9px);
-  }
-  92% {
-    left: calc(100% - 9px);
-    opacity: 1;
-  }
-  97%,
-  100% {
-    opacity: 0;
-    left: calc(100% - 9px);
-  }
-}
-@keyframes tdc-seen-a {
-  0%,
-  16% {
-    opacity: 0.22;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #5d6974;
-  }
-  20%,
-  92% {
-    opacity: 1;
-    border-color: #dc150b;
-    color: #fff;
-  }
-  97%,
-  100% {
-    opacity: 0.22;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #5d6974;
-  }
-}
-@keyframes tdc-seen-b {
-  0%,
-  44% {
-    opacity: 0.22;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #5d6974;
-  }
-  48%,
-  92% {
-    opacity: 1;
-    border-color: #dc150b;
-    color: #fff;
-  }
-  97%,
-  100% {
-    opacity: 0.22;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #5d6974;
-  }
-}
-@keyframes tdc-seen-c {
-  0%,
-  74% {
-    opacity: 0.22;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #5d6974;
-  }
-  78%,
-  92% {
-    opacity: 1;
-    border-color: #dc150b;
-    color: #fff;
-  }
-  97%,
-  100% {
-    opacity: 0.22;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #5d6974;
-  }
-}
 /* Bands enter in sequence but exit together — only the entrance carries the
    order, so the direction reads unambiguously at any point in the loop. */
 @keyframes tdc-band-a {
@@ -941,24 +818,6 @@
   }
 }
 
-.tdc-travel-a {
-  animation: tdc-travel-a 6s linear infinite;
-}
-.tdc-travel-b {
-  animation: tdc-travel-b 6s linear infinite;
-}
-.tdc-travel-c {
-  animation: tdc-travel-c 6s linear infinite;
-}
-.tdc-seen-a {
-  animation: tdc-seen-a 6s linear infinite;
-}
-.tdc-seen-b {
-  animation: tdc-seen-b 6s linear infinite;
-}
-.tdc-seen-c {
-  animation: tdc-seen-c 6s linear infinite;
-}
 .tdc-band-a {
   animation: tdc-band-a 6s infinite;
 }
@@ -976,12 +835,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tdc-travel-a,
-  .tdc-travel-b,
-  .tdc-travel-c,
-  .tdc-seen-a,
-  .tdc-seen-b,
-  .tdc-seen-c,
   .tdc-band-a,
   .tdc-band-b,
   .tdc-band-c,

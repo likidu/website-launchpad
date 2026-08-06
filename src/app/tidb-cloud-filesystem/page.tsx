@@ -95,6 +95,21 @@ const faqItems: {
     ),
   },
   {
+    value: 'consistency',
+    q: 'What does a second runtime see while one is writing?',
+    plain: {
+      question: 'What does a second runtime see while one is writing?',
+      answer:
+        'You choose, per workspace: writeback favors write speed, write-sync makes every write immediately visible to every reader, and close-sync syncs when a file closes.',
+    },
+    answer: (
+      <>
+        You choose, per workspace: writeback favors write speed, write-sync makes every write
+        immediately visible to every reader, and close-sync syncs when a file closes.
+      </>
+    ),
+  },
+  {
     value: 'regions',
     q: 'Which regions can I create a filesystem in?',
     plain: {
@@ -280,15 +295,13 @@ const schema = buildPageSchema({
   ],
 })
 
-const consistencyModes: {
-  mode: string
-  travelClass: string
-  seenClass: string
-  seen: string
-}[] = [
-  { mode: 'write-sync', travelClass: 'tdc-travel-a', seenClass: 'tdc-seen-a', seen: 'on write' },
-  { mode: 'close-sync', travelClass: 'tdc-travel-b', seenClass: 'tdc-seen-b', seen: 'on close' },
-  { mode: 'writeback', travelClass: 'tdc-travel-c', seenClass: 'tdc-seen-c', seen: 'on flush' },
+const workingSetFiles = [
+  'app.tsx',
+  'upload.pdf',
+  'dataset.csv',
+  'junit.xml',
+  'build.log',
+  'patch.diff',
 ]
 
 // Salience ramps downward with agent-ness: the baseline stays neutral, the
@@ -613,47 +626,40 @@ export default function TidbCloudFilesystemPage() {
                 </div>
               </SlideIn>
 
-              {/* Consistency modes */}
+              {/* Any file, any format */}
               <SlideIn direction="up" delay={140}>
                 <div className="flex h-full flex-col gap-5 rounded-xl border border-white/10 bg-white/[0.04] px-[26px] pb-[26px] pt-7">
                   <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
-                    Consistency modes
+                    Any file, any format
                   </p>
                   {/* title-case-ignore */}
                   <h3 className="text-h3-lg font-bold">
-                    You decide when other agents see a write.
+                    One place for everything the agent touches.
                   </h3>
                   <p className="flex-1 text-body-md text-carbon-400">
-                    Writeback for speed, write-sync for certainty, close-sync in between — chosen
-                    per workspace. You decide how quickly every runtime agrees on what&apos;s in a
-                    file.
+                    An agent&apos;s working set is never just code — it&apos;s source, uploads,
+                    datasets, test output, artifacts. One durable workspace holds all of it, instead
+                    of a repo plus a bucket plus a log shipper.
                   </p>
-                  <div className="grid gap-4 border-t border-white/10 pt-[22px]">
-                    <div className="grid grid-cols-[82px_1fr_86px] gap-3 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                      <span>MODE</span>
-                      <span>WRITE COMMITS</span>
-                      <span className="text-right">READER SEES</span>
-                    </div>
-                    {consistencyModes.map((m) => (
-                      <div
-                        key={m.mode}
-                        className="grid grid-cols-[82px_1fr_86px] items-center gap-3"
-                      >
-                        <span className="font-mono text-[11px] text-white">{m.mode}</span>
-                        <span className="relative h-0.5 bg-white/[0.12]">
+                  <div className="grid gap-2.5 border-t border-white/10 pt-[22px]">
+                    <p className="mb-1 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                      THE WORKING SET, IN ONE PLACE
+                    </p>
+                    <div className="rounded-md border border-brand-red-primary/40 bg-brand-red-primary/[0.04] px-3.5 py-3">
+                      <div className="flex flex-wrap gap-2">
+                        {workingSetFiles.map((file, index) => (
                           <span
-                            className={`${m.travelClass} absolute -top-[3.5px] h-[9px] w-[9px] rounded-full bg-brand-red-primary`}
-                          />
-                        </span>
-                        <span
-                          className={`${m.seenClass} rounded border border-white/[0.12] py-1 text-center font-mono text-[9px]`}
-                        >
-                          {m.seen}
-                        </span>
+                            key={file}
+                            className="tdc-keep rounded border border-white/[0.14] px-2 py-1 font-mono text-[10px] text-carbon-200"
+                            style={{ animationDelay: `${index * 0.18}s` }}
+                          >
+                            {file}
+                          </span>
+                        ))}
                       </div>
-                    ))}
-                    <p className="mt-1 font-mono text-[10px] leading-[1.6] text-carbon-700">
-                      Fastest write at the bottom, strongest guarantee at the top.
+                    </div>
+                    <p className="mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                      The same path from CLI, IDE, agent and CI — one namespace.
                     </p>
                   </div>
                 </div>

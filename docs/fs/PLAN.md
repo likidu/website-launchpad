@@ -131,6 +131,7 @@ limitation.** Nothing else ships.
 | 13  | **Value cards are built on discriminating capabilities, not on the shared-workspace properties**                                                      | **Settled 2026-08-05.** Consistency modes, git-aware workspace, rebuildable-vs-persistent split. See ADR-0001                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | 14  | **The 8-step loop is shown, not narrated** — v1's eight static prose rows replaced by a visual/animated sequence, copy cut to roughly a line per step | **New 2026-08-05, from v1 review; treatment settled same day via prototype.** Amends the build-budget rule ("ship as a static sequence"). Eight rows × ~45 words is an essay on a page the audience skims — the section's job is to make the loop _legible_, and the static list fails it. Content and claims are unchanged; this is presentation only. Marketing's auto-playing 8-tab rig stays rejected — one scoped treatment applied eight times, not eight bespoke animations. **Winner: a full-bleed auto-advancing expanding-card strip** (one card open, seven slivers, 4s interval, hover pauses, click activates, reduced-motion disables the timer, compact list below lg) — chosen over a stepper-plus-accumulator and a scroll-pinned sequence; all four variants preserved on branch `prototype/fs-loop-section`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | 15  | **§2 header reworked; three cards stand; no search card**                                                                                             | **Settled 2026-08-06 (grill session).** (i) §2's job is differentiation against _the reader's current storage_ — the disk that dies with the sandbox — not filesystem taxonomy; the title's foil changes from "a local one" to the ephemeral sandbox disk. (ii) The subhead keeps the structural moat (distributed database underneath) translated to plain speech; "category"/"mechanisms" analyst-speak dies. (iii) Table stakes: **checkpoints never appear in §2** — FAQ 7 retracts the guarantee and Decision 12 flags the claim; the reassurance need is met by a quiet mono strip under the cards phrased as behavior, not "POSIX." (iv) **No fourth card** — inline small-file storage re-failed for the wedge-#1 reasons (no figure, not customer-visible, no interface), and full-text-search-as-card failed the ADR-0001 tick-count (no matrix row; Turso plausibly matches via SQLite FTS — a sprint, not a database) plus it headlines the semantic-search-retraction zone. The capability is real (`search-file-content` / `find-files` are shipped commands), so it folds into the reassurance strip's "or don't mount" clause; step 02 stays the mechanism home. Card candidacy revisits in September only if Todd confirms index-backed search and the matrix row shows exclusivity |
+| 16  | **§2 card 3 is the working set, not consistency modes** — kicker "Any file, any format," title "One place for everything the agent touches."          | **Settled 2026-08-06 (second grill round).** The section's card criterion is now formal: **legible in 3 seconds + true under claims discipline + felt by the audience** — exclusivity is retired as a requirement, since 15.i already moved the foil to the reader's own storage. Consistency modes failed the legibility bar through two rewrites; it relocates to a new FAQ entry and headlines the 2026-09-13 selection-and-boundaries page, whose benchmark spec is already concurrency-shaped. Mountless search was proposed and dropped — defensible, not felt; it keeps its homes (strip clause, loop step 02). Checkpoint stays barred by FAQ 7 regardless of Mesa's precedent (they ship the guarantee; we retract it). The working-set card is backed by the Drive9 deck p.33 core values (four regular-file scenarios, unified namespace), matches Mesa's most legible card, and inherits the clean Cloudflare contrast (git-only by design). It says **working set** deliberately — active state — so it does not contradict §5's routing of archives and backups to object storage                                                                                                                                                                                                      |
 
 ## What actually differentiates us
 
@@ -233,10 +234,13 @@ That is a real copywriting discipline and it costs nothing.
    > node_modules and dist can be rebuilt anywhere, so they stay local. What can't be
    > rebuilt — test results, failure logs, patches — is what persists.
    >
-   > **Consistency modes — "You decide when other agents see a write."** (was "You choose
-   > what a concurrent reader sees." — 'concurrent reader' is database-speak)
-   > Writeback for speed, write-sync for certainty, close-sync in between — chosen per
-   > workspace. You decide how quickly every runtime agrees on what's in a file.
+   > **Any file, any format — "One place for everything the agent touches."** (replaced
+   > consistency modes 2026-08-06, Decision 16)
+   > An agent's working set is never just code — it's source, uploads, datasets, test
+   > output, artifacts. One durable workspace holds all of it, instead of a repo plus a
+   > bucket plus a log shipper.
+   > _Card footer picks up the deck's unified-namespace value: "The same path from CLI,
+   > IDE, agent and CI — one namespace."_
 
    Accuracy guard kept: no "agents always agree" phrasing — under writeback they can
    briefly disagree; that tradeoff is the product.
@@ -302,7 +306,7 @@ works. **Also rejected:** their subhead _"mountable, searchable, recoverable, ha
 an adjective list, and **two of the four adjectives are claims the page's own FAQ retracts**
 (semantic search, checkpoint/rollback).
 
-### FAQ — nine answers
+### FAQ
 
 **Evidence doc §2.1 makes a public known-limitations list a required minimum-tier gate item**,
 owned by Product + Growth, "fold into the page and quickstart." So this is not a matter of
@@ -340,6 +344,13 @@ Plus one rewritten (Decision 4 / Q8):
 > actually _unbilled_ before Sep 10, or merely _unpriced_? Those are different, and only the
 > first is safe to write down. Evidence doc §4.2 says Aug 16 ships **no pricing content** —
 > stating _when_ pricing arrives is not a pricing surface, but the distinction matters.
+
+Added 2026-08-06 (Decision 16 — inherits §2's retired card):
+
+11. **Consistency** — "What does a second runtime see while one is writing?" You choose,
+    per workspace: writeback for speed, write-sync for certainty — every write
+    immediately visible everywhere — close-sync in between, syncing when a file closes.
+    Same claim strength as the retired card; no defaults invented.
 
 Deliberately absent: pricing figures, a security/compliance section, testimonials.
 
