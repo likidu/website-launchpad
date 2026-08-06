@@ -663,10 +663,6 @@ export default function TidbCloudFilesystemPage() {
                 </div>
               </SlideIn>
             </div>
-            <p className="mt-8 max-w-[760px] font-mono text-[11px] leading-[1.6] text-carbon-600">
-              The ordinary parts are assumed — mount it and your tools just see files. Or don&apos;t
-              mount at all: read, grep and find run against the workspace directly.
-            </p>
           </div>
         </section>
 

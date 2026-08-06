@@ -252,8 +252,11 @@ That is a real copywriting discipline and it costs nothing.
    > All three exist for one reason: a distributed database sits under this filesystem,
    > so it can promise things a disk can't.
 
-   Plus one quiet mono strip under the three cards (behavior, never "POSIX," never
-   checkpoints):
+   ~~Plus one quiet mono strip under the three cards~~ — **strip removed 2026-08-06**:
+   with the diagram areas aligned and titled, the extra line under the grid read as
+   clutter. The mount reassurance survives in the hero snippet and the laptop FAQ; the
+   mountless family keeps its homes in the hero's last line and loop step 02. Original
+   strip copy, for the record:
 
    > The ordinary parts are assumed — mount it and your tools just see files. Or don't
    > mount at all: read, grep and find run against the workspace directly.
