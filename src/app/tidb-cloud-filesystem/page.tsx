@@ -291,19 +291,27 @@ const consistencyModes: {
   { mode: 'writeback', travelClass: 'tdc-travel-c', seenClass: 'tdc-seen-c', seen: 'on flush' },
 ]
 
-const gitBands: { name: string; caption: string; className: string; delay?: string }[] = [
-  { name: 'clean tree', caption: 'the committed baseline', className: 'border-white/[0.14]' },
+// Salience ramps downward with agent-ness: the baseline stays neutral, the
+// agent's own leavings get progressively redder — a second order cue on top
+// of the staggered entrance.
+const gitBands: { n: string; name: string; caption: string; className: string }[] = [
   {
-    name: 'dirty overlay',
-    caption: 'uncommitted modifications',
-    className: 'border-brand-red-primary bg-brand-red-primary/[0.09]',
-    delay: '0.55s',
+    n: '01',
+    name: 'clean tree',
+    caption: 'the committed baseline',
+    className: 'tdc-band-a border-white/[0.14]',
   },
   {
+    n: '02',
+    name: 'dirty overlay',
+    caption: 'uncommitted modifications',
+    className: 'tdc-band-b border-brand-red-primary/50 bg-brand-red-primary/[0.05]',
+  },
+  {
+    n: '03',
     name: 'object pack',
     caption: 'objects the agent created',
-    className: 'border-brand-red-light bg-brand-red-light/[0.07]',
-    delay: '1.1s',
+    className: 'tdc-band-c border-brand-red-primary bg-brand-red-primary/[0.10]',
   },
 ]
 
@@ -529,16 +537,18 @@ export default function TidbCloudFilesystemPage() {
                     <p className="mb-1 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
                       WHAT COMES BACK, IN ORDER
                     </p>
-                    {gitBands.map((band) => (
+                    {gitBands.map((band, index) => (
                       <div
                         key={band.name}
-                        className={`tdc-band rounded-md border px-3.5 py-3 ${band.className}`}
-                        style={band.delay ? { animationDelay: band.delay } : undefined}
+                        className={`rounded-md border px-3.5 py-3 ${band.className}`}
                       >
-                        <p className="font-mono text-[11px] text-white">{band.name}</p>
+                        <p className="font-mono text-[11px] text-white">
+                          <span className="mr-2 text-carbon-700">{band.n}</span>
+                          {band.name}
+                        </p>
                         <p
                           className={`mt-1 font-mono text-[10px] ${
-                            band.delay ? 'text-carbon-400' : 'text-carbon-700'
+                            index === 0 ? 'text-carbon-700' : 'text-carbon-400'
                           }`}
                         >
                           {band.caption}

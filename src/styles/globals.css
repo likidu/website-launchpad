@@ -855,20 +855,60 @@
     color: #5d6974;
   }
 }
-@keyframes tdc-band {
+/* Bands enter in sequence but exit together — only the entrance carries the
+   order, so the direction reads unambiguously at any point in the loop. */
+@keyframes tdc-band-a {
   0%,
-  8% {
+  2% {
     opacity: 0;
     transform: translateY(9px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
   }
-  24%,
-  88% {
+  8%,
+  92% {
     opacity: 1;
     transform: translateY(0);
+    animation-timing-function: ease-out;
   }
   100% {
     opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes tdc-band-b {
+  0%,
+  11% {
+    opacity: 0;
     transform: translateY(9px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  17%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes tdc-band-c {
+  0%,
+  20% {
+    opacity: 0;
+    transform: translateY(9px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  26%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
   }
 }
 @keyframes tdc-drop {
@@ -890,14 +930,14 @@
 @keyframes tdc-keep {
   0%,
   18% {
-    opacity: 0.28;
+    opacity: 0.7;
   }
   44%,
   82% {
     opacity: 1;
   }
   100% {
-    opacity: 0.28;
+    opacity: 0.7;
   }
 }
 
@@ -919,8 +959,14 @@
 .tdc-seen-c {
   animation: tdc-seen-c 6s linear infinite;
 }
-.tdc-band {
-  animation: tdc-band 6s ease-in-out infinite;
+.tdc-band-a {
+  animation: tdc-band-a 6s infinite;
+}
+.tdc-band-b {
+  animation: tdc-band-b 6s infinite;
+}
+.tdc-band-c {
+  animation: tdc-band-c 6s infinite;
 }
 .tdc-drop {
   animation: tdc-drop 6s ease-in-out infinite;
@@ -936,7 +982,9 @@
   .tdc-seen-a,
   .tdc-seen-b,
   .tdc-seen-c,
-  .tdc-band,
+  .tdc-band-a,
+  .tdc-band-b,
+  .tdc-band-c,
   .tdc-drop,
   .tdc-keep {
     animation: none;
