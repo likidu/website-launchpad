@@ -540,8 +540,8 @@ export default function TidbCloudFilesystemPage() {
                     The branch, the uncommitted changes, the objects the agent created — all of it
                     comes back on resume. Not a fresh clone; the actual working state.
                   </p>
-                  <div className="grid gap-2.5 border-t border-white/10 pt-[22px]">
-                    <p className="mb-1 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                  <div className="flex min-h-[320px] flex-col gap-2.5 border-t border-white/10 pt-[22px]">
+                    <p className="mb-1 font-mono text-[11px] tracking-[0.05em] text-carbon-700">
                       WHAT COMES BACK, IN ORDER
                     </p>
                     {gitBands.map((band, index) => (
@@ -554,7 +554,7 @@ export default function TidbCloudFilesystemPage() {
                           {band.name}
                         </p>
                         <p
-                          className={`mt-1 font-mono text-[10px] ${
+                          className={`mt-1 font-mono text-[11px] ${
                             index === 0 ? 'text-carbon-700' : 'text-carbon-400'
                           }`}
                         >
@@ -562,7 +562,7 @@ export default function TidbCloudFilesystemPage() {
                         </p>
                       </div>
                     ))}
-                    <p className="mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                    <p className="mt-auto pt-2 font-mono text-xs leading-[1.6] text-carbon-700">
                       <code>tdc fs-git clone-git-workspace</code> ·{' '}
                       <code>hydrate-git-workspace</code> · <code>add-git-worktree</code>
                     </p>
@@ -583,36 +583,41 @@ export default function TidbCloudFilesystemPage() {
                     stay local. What can&apos;t be rebuilt — test results, failure logs, patches —
                     is what persists.
                   </p>
-                  <div className="grid grid-cols-2 gap-[18px] border-t border-white/10 pt-[22px]">
-                    <div className="grid content-start gap-2">
-                      <p className="mb-0.5 font-mono text-[10px] tracking-[0.05em] text-brand-red-primary">
-                        PERSISTED
-                      </p>
-                      {persistedFiles.map((file, i) => (
-                        <span
-                          key={file}
-                          className="tdc-keep border-l-2 border-brand-red-primary pl-[9px] font-mono text-[11px] text-white"
-                          style={{ animationDelay: `${i * 0.12}s` }}
-                        >
-                          {file}
-                        </span>
-                      ))}
+                  <div className="flex min-h-[320px] flex-col gap-2.5 border-t border-white/10 pt-[22px]">
+                    <p className="mb-1 font-mono text-[11px] tracking-[0.05em] text-carbon-700">
+                      THE SPLIT, FILE BY FILE
+                    </p>
+                    <div className="grid grid-cols-2 gap-[18px]">
+                      <div className="grid content-start gap-2">
+                        <p className="mb-0.5 font-mono text-[11px] tracking-[0.05em] text-brand-red-primary">
+                          PERSISTED
+                        </p>
+                        {persistedFiles.map((file, i) => (
+                          <span
+                            key={file}
+                            className="tdc-keep border-l-2 border-brand-red-primary pl-[9px] font-mono text-[11px] text-white"
+                            style={{ animationDelay: `${i * 0.12}s` }}
+                          >
+                            {file}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="grid content-start gap-2">
+                        <p className="mb-0.5 font-mono text-[11px] tracking-[0.05em] text-carbon-700">
+                          LOCAL-ONLY
+                        </p>
+                        {localOnlyFiles.map((file, i) => (
+                          <span
+                            key={file}
+                            className="tdc-drop border-l-2 border-carbon-800 pl-[9px] font-mono text-[11px] text-carbon-400"
+                            style={{ animationDelay: `${i * 0.12}s` }}
+                          >
+                            {file}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <div className="grid content-start gap-2">
-                      <p className="mb-0.5 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
-                        LOCAL-ONLY
-                      </p>
-                      {localOnlyFiles.map((file, i) => (
-                        <span
-                          key={file}
-                          className="tdc-drop border-l-2 border-carbon-800 pl-[9px] font-mono text-[11px] text-carbon-400"
-                          style={{ animationDelay: `${i * 0.12}s` }}
-                        >
-                          {file}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="col-span-2 mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                    <p className="mt-auto pt-2 font-mono text-xs leading-[1.6] text-carbon-700">
                       The split follows the project&apos;s own shape, not a config file you
                       maintain.
                     </p>
@@ -635,8 +640,8 @@ export default function TidbCloudFilesystemPage() {
                     datasets, test output, artifacts. One durable workspace holds all of it, instead
                     of a repo plus a bucket plus a log shipper.
                   </p>
-                  <div className="grid gap-2.5 border-t border-white/10 pt-[22px]">
-                    <p className="mb-1 font-mono text-[10px] tracking-[0.05em] text-carbon-700">
+                  <div className="flex min-h-[320px] flex-col gap-2.5 border-t border-white/10 pt-[22px]">
+                    <p className="mb-1 font-mono text-[11px] tracking-[0.05em] text-carbon-700">
                       THE WORKING SET, IN ONE PLACE
                     </p>
                     <div className="rounded-md border border-brand-red-primary/40 bg-brand-red-primary/[0.04] px-3.5 py-3">
@@ -644,14 +649,14 @@ export default function TidbCloudFilesystemPage() {
                         {workingSetFiles.map((file, index) => (
                           <span
                             key={file}
-                            className={`tdc-gather-${index + 1} rounded border border-white/[0.14] px-2 py-1 font-mono text-[10px] text-carbon-200`}
+                            className={`tdc-gather-${index + 1} rounded border border-white/[0.14] px-2 py-1 font-mono text-[11px] text-carbon-200`}
                           >
                             {file}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <p className="mt-1.5 font-mono text-[10px] leading-[1.6] text-carbon-700">
+                    <p className="mt-auto pt-2 font-mono text-xs leading-[1.6] text-carbon-700">
                       The same path from CLI, IDE, agent and CI — one namespace.
                     </p>
                   </div>
@@ -725,9 +730,6 @@ export default function TidbCloudFilesystemPage() {
             </p>
 
             <LoopStrip showMechanisms={SHOW_MECHANISMS} />
-            <p className="mt-14 max-w-[760px] text-pretty text-body-2xl font-regular text-white">
-              That&apos;s the loop. The question left is whether your state has a boundary to cross.
-            </p>
           </div>
         </section>
 
