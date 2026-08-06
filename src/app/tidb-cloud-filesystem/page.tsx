@@ -503,11 +503,11 @@ export default function TidbCloudFilesystemPage() {
             <p className="mb-8 font-mono text-[15px] text-carbon-400">What makes it different</p>
             {/* title-case-ignore */}
             <h2 className="mb-5 max-w-[880px] text-pretty text-h2-mb font-bold leading-tight tracking-[-0.02em] md:text-h2-sm">
-              Three questions a shared filesystem has to answer, and a local one never does.
+              Three things the disk in your sandbox can&apos;t do.
             </h2>
             <p className="mb-14 max-w-[660px] text-body-lg text-carbon-400">
-              Hosted, concurrent and multi-machine is the category. These three are the mechanisms —
-              and each of them exists because a distributed database sits underneath.
+              All three exist for one reason: a distributed database sits under this filesystem, so
+              it can promise things a disk can&apos;t.
             </p>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -650,6 +650,10 @@ export default function TidbCloudFilesystemPage() {
                 </div>
               </SlideIn>
             </div>
+            <p className="mt-8 max-w-[760px] font-mono text-[11px] leading-[1.6] text-carbon-600">
+              The ordinary parts are assumed — mount it and your tools just see files. Or don&apos;t
+              mount at all: read, grep and find run against the workspace directly.
+            </p>
           </div>
         </section>
 
