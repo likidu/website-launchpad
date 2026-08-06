@@ -18,6 +18,7 @@ import { SlideIn } from '@/components/ui/SlideIn'
 import { Command } from './Command'
 import { DataPlaneDiagram } from './DataPlaneDiagram'
 import { LoopStrip } from './LoopStrip'
+import { PrismBackground } from './PrismBackground'
 
 // Internal-review annotations and mechanism captions from the "1st cut" design.
 // Both default on for the 2026-08-10 internal review; flip off for launch.
@@ -649,8 +650,9 @@ export default function TidbCloudFilesystemPage() {
         </section>
 
         {/* 03 Proof */}
-        <section id="proof" className="bg-bg-primary py-20">
-          <div className="mx-auto max-w-container px-4 md:px-8 lg:px-16">
+        <section id="proof" className="relative isolate overflow-hidden bg-bg-primary py-20">
+          <PrismBackground />
+          <div className="relative z-10 mx-auto max-w-container px-4 md:px-8 lg:px-16">
             <p className="mb-8 font-mono text-[15px] text-carbon-400">Proof at scale</p>
             <KimiLogo className="mb-6 h-7 w-auto text-white" />
             {/* title-case-ignore */}
@@ -667,7 +669,9 @@ export default function TidbCloudFilesystemPage() {
                 </p>
               </div>
               <div>
-                <p className="max-w-[560px] text-pretty text-body-lg text-carbon-400">
+                {/* .prism-done lands on the section when the prism reveal
+                    completes (see PrismBackground) — the gray morphs to white. */}
+                <p className="max-w-[560px] text-pretty text-body-lg text-carbon-400 transition-colors duration-700 ease-out [.prism-done_&]:text-white">
                   TiDB Cloud Filesystem holds the agent workspaces behind Kimi Work, Moonshot
                   AI&apos;s desktop AI agent for knowledge workers — which is why the runtimes that
                   execute those agents stay disposable.
