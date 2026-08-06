@@ -787,7 +787,7 @@ export default function TidbCloudFilesystemPage() {
             <h2 className="mb-12 max-w-[820px] text-pretty text-h2-mb font-bold leading-tight tracking-[-0.02em] md:text-h2-sm">
               What it is, and what it isn&apos;t yet.
             </h2>
-            <div className="max-w-[860px]">
+            <div className="mx-auto max-w-[860px]">
               <Accordion type="single" defaultValue="what-is-it" collapsible>
                 {faqItems.map((item) => (
                   <AccordionItem key={item.value} value={item.value}>
