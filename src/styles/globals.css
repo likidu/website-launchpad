@@ -818,6 +818,136 @@
   }
 }
 
+/* Working-set chips gather one by one and exit together — same grammar as
+   the git bands: only the entrance carries meaning. */
+@keyframes tdc-gather-1 {
+  0%,
+  2% {
+    opacity: 0;
+    transform: translateY(6px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  8%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes tdc-gather-2 {
+  0%,
+  9% {
+    opacity: 0;
+    transform: translateY(6px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  15%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes tdc-gather-3 {
+  0%,
+  16% {
+    opacity: 0;
+    transform: translateY(6px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  22%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes tdc-gather-4 {
+  0%,
+  23% {
+    opacity: 0;
+    transform: translateY(6px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  29%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes tdc-gather-5 {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translateY(6px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  36%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes tdc-gather-6 {
+  0%,
+  37% {
+    opacity: 0;
+    transform: translateY(6px);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  43%,
+  92% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+.tdc-gather-1 {
+  animation: tdc-gather-1 6s infinite;
+}
+.tdc-gather-2 {
+  animation: tdc-gather-2 6s infinite;
+}
+.tdc-gather-3 {
+  animation: tdc-gather-3 6s infinite;
+}
+.tdc-gather-4 {
+  animation: tdc-gather-4 6s infinite;
+}
+.tdc-gather-5 {
+  animation: tdc-gather-5 6s infinite;
+}
+.tdc-gather-6 {
+  animation: tdc-gather-6 6s infinite;
+}
+
 .tdc-band-a {
   animation: tdc-band-a 6s infinite;
 }
@@ -838,6 +968,12 @@
   .tdc-band-a,
   .tdc-band-b,
   .tdc-band-c,
+  .tdc-gather-1,
+  .tdc-gather-2,
+  .tdc-gather-3,
+  .tdc-gather-4,
+  .tdc-gather-5,
+  .tdc-gather-6,
   .tdc-drop,
   .tdc-keep {
     animation: none;

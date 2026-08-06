@@ -644,8 +644,7 @@ export default function TidbCloudFilesystemPage() {
                         {workingSetFiles.map((file, index) => (
                           <span
                             key={file}
-                            className="tdc-keep rounded border border-white/[0.14] px-2 py-1 font-mono text-[10px] text-carbon-200"
-                            style={{ animationDelay: `${index * 0.18}s` }}
+                            className={`tdc-gather-${index + 1} rounded border border-white/[0.14] px-2 py-1 font-mono text-[10px] text-carbon-200`}
                           >
                             {file}
                           </span>
