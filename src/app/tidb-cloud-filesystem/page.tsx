@@ -659,7 +659,7 @@ export default function TidbCloudFilesystemPage() {
             <h2 className="mb-12 max-w-[820px] text-pretty text-h2-mb font-bold leading-tight tracking-[-0.02em] text-carbon-400 md:text-h2-sm">
               Workspace continuity, running in production.
             </h2>
-            <div className="grid grid-cols-1 items-end gap-12 border-b border-border-primary pb-[36px] lg:grid-cols-2">
+            <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-2">
               <div>
                 <p className="text-[64px] font-bold leading-[0.92] tracking-[-0.04em] text-white md:text-[96px]">
                   <CountUp value="70,000+" />
