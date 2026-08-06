@@ -17,6 +17,7 @@ import { CountUp } from '@/components/ui/CountUp'
 import { SlideIn } from '@/components/ui/SlideIn'
 import { Command } from './Command'
 import { DataPlaneDiagram } from './DataPlaneDiagram'
+import { LoopStrip } from './LoopStrip'
 
 // Internal-review annotations and mechanism captions from the "1st cut" design.
 // Both default on for the 2026-08-10 internal review; flip off for launch.
@@ -307,76 +308,6 @@ const gitBands: { name: string; caption: string; className: string; delay?: stri
 const persistedFiles = ['source', 'lock file', 'patches', 'test results', 'failure logs']
 const localOnlyFiles = ['node_modules', '.tsbuildinfo', 'dist', '.turbo', 'coverage']
 
-const loopSteps: {
-  n: string
-  title: string
-  body: React.ReactNode
-  mech: string
-  final?: boolean
-}[] = [
-  {
-    n: '01',
-    // title-case-ignore
-    title: 'Enter the repository',
-    body: 'The tree and file metadata arrive first; content loads on access. The agent starts reasoning about a large repository before it is fully local.',
-    mech: 'metadata-first · lazy hydration',
-  },
-  {
-    n: '02',
-    title: 'Search',
-    body: (
-      <>
-        Content search and filename matching run against the workspace, with build output kept out
-        of the answer. Batch <code>stat</code> collapses the round trips a repo-wide search would
-        otherwise cost.
-      </>
-    ),
-    mech: 'fs search-file-content · fs find-files · ignore policy',
-  },
-  {
-    n: '03',
-    // title-case-ignore
-    title: 'Read context',
-    body: 'An agent never reads one file — it opens the handler, the config, the loader, the test and the failing log. Small files are held inline with their metadata, so that set arrives as a batch instead of a dozen round trips.',
-    mech: 'inline small files · batch read',
-  },
-  {
-    n: '04',
-    // title-case-ignore
-    title: 'Edit files',
-    body: 'If remote writes sat in the hot path, every formatter pass would stall on the network. Writes land locally first; a journal records what has not been committed onward, so a process dying is not the same as work disappearing.',
-    mech: 'local-first write · journal · async writeback',
-  },
-  {
-    n: '05',
-    // title-case-ignore
-    title: 'Build and test',
-    body: "The rebuildable half of a build stays local. The outcome — test results, failure logs, patches, final output — persists. The point isn't syncing the build; it's keeping the result.",
-    mech: 'build profile · local-only overlay',
-  },
-  {
-    n: '06',
-    // title-case-ignore
-    title: 'Save Git state',
-    body: 'Naive file sync fails quietly here: every file present, but the dirty state wrong or new objects missing. Baseline, uncommitted changes and created objects are modelled separately.',
-    mech: 'tdc fs-git · clean tree · dirty overlay · object pack',
-  },
-  {
-    n: '07',
-    title: 'Checkpoint',
-    body: "Real tasks aren't one pass — first attempt, failed build, log, second attempt. Layer commands are in the CLI today, but checkpoint and rollback are not part of what the technical preview guarantees. What is ready is the next step.",
-    mech: 'fs create-layer · create-layer-checkpoint · rollback-layer — preview, not guaranteed',
-  },
-  {
-    n: '08',
-    // title-case-ignore
-    title: 'Hand off',
-    body: 'The next runtime opens the same workspace with the same filesystem token — on another machine, at the same path, or with no mount at all. This is the step a shared directory cannot express, and the one the whole page is about.',
-    mech: 'filesystem token · one namespace · fs read-file, mountless',
-    final: true,
-  },
-]
-
 const fitChecklist = [
   'a sandbox or ephemeral job ends before the task is done',
   'each run clones and prepares the same repository again',
@@ -403,19 +334,6 @@ function ReviewNote({ text, light = false }: { text: string; light?: boolean }) 
     >
       <span className={light ? 'text-brand-red-light' : 'text-brand-red-primary'}>REVIEW</span>
       <span>{text}</span>
-    </p>
-  )
-}
-
-function Mechanism({ text, highlight = false }: { text: string; highlight?: boolean }) {
-  if (!SHOW_MECHANISMS) return null
-  return (
-    <p
-      className={`mt-2 font-mono text-[10px] tracking-[0.04em] ${
-        highlight ? 'text-carbon-400' : 'text-carbon-700'
-      }`}
-    >
-      {text}
     </p>
   )
 }
@@ -773,33 +691,7 @@ export default function TidbCloudFilesystemPage() {
               the loop ends where a sandbox volume can&apos;t follow.
             </p>
 
-            <div className="grid">
-              {loopSteps.map((step) => (
-                <div
-                  key={step.n}
-                  className={
-                    step.final
-                      ? 'grid grid-cols-[56px_1fr] items-start gap-x-6 gap-y-2 border-b border-t border-b-border-primary border-t-brand-red-primary bg-brand-red-primary/5 py-5 md:grid-cols-[56px_240px_1fr]'
-                      : 'grid grid-cols-[56px_1fr] items-start gap-x-6 gap-y-2 border-t border-border-primary py-5 md:grid-cols-[56px_240px_1fr]'
-                  }
-                >
-                  <span
-                    className={`font-mono text-xs ${
-                      step.final ? 'text-brand-red-primary' : 'text-carbon-700'
-                    }`}
-                  >
-                    {step.n}
-                  </span>
-                  <span className="text-body-md font-medium text-white">{step.title}</span>
-                  <div className="col-span-2 md:col-span-1 [&_code]:font-mono">
-                    <p className={`text-body-md ${step.final ? 'text-white' : 'text-carbon-400'}`}>
-                      {step.body}
-                    </p>
-                    <Mechanism text={step.mech} highlight={step.final} />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <LoopStrip showMechanisms={SHOW_MECHANISMS} />
             <p className="mt-14 max-w-[760px] text-pretty text-body-2xl font-regular text-white">
               That&apos;s the loop. The question left is whether your state has a boundary to cross.
             </p>
