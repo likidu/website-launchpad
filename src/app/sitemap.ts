@@ -65,7 +65,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Playbook pages
     { url: '/playbook/', priority: 0.8, changeFrequency: 'weekly' },
+    { url: '/playbook/ai-agent-memory/', priority: 0.7, changeFrequency: 'monthly' },
     { url: '/playbook/aurora-mysql-migration/', priority: 0.7, changeFrequency: 'monthly' },
+    { url: '/playbook/build-mcp-server/', priority: 0.7, changeFrequency: 'monthly' },
     { url: '/playbook/embed-vector-db-build-rag/', priority: 0.7, changeFrequency: 'monthly' },
     { url: '/playbook/escape-mysql-sharding-pain/', priority: 0.7, changeFrequency: 'monthly' },
     {
