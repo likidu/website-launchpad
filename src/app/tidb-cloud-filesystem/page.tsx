@@ -22,9 +22,8 @@ import { HeroShade } from './HeroShade'
 import { LoopStrip } from './LoopStrip'
 import { PrismBackground } from './PrismBackground'
 
-// Internal-review annotations and mechanism captions from the "1st cut" design.
-// Both default on for the 2026-08-10 internal review; flip off for launch.
-const SHOW_REVIEW_NOTES = true
+// Mechanism captions from the "1st cut" design.
+// Defaults on for the 2026-08-10 internal review; flip off for launch.
 const SHOW_MECHANISMS = true
 
 const TITLE = 'TiDB Cloud Filesystem: The Workspace Your Agents Share'
@@ -61,7 +60,6 @@ const faqItems: {
   /** Plain-text Q/A for the FAQPage schema node */
   plain: { question: string; answer: string }
   answer: React.ReactNode
-  review?: string
 }[] = [
   {
     value: 'what-is-it',
@@ -116,17 +114,20 @@ const faqItems: {
     plain: {
       question: 'Which regions can I create a filesystem in?',
       answer:
-        'Region is a required flag when you create a filesystem. The CLI reference lists the region codes available in the technical preview; run ti fs create-file-system --help for the current set.',
+        'Region is a required flag when you create a filesystem. See the list of available regions for the current set.',
     },
     answer: (
       <>
-        Region is a required flag when you create a filesystem. The CLI reference lists the region
-        codes available in the technical preview; run <code>ti fs create-file-system --help</code>{' '}
+        Region is a required flag when you create a filesystem.{' '}
+        <a
+          href="https://ai.pingcap-docsite-preview.pages.dev/ai/ti-regions-security-and-limitations/"
+          className="text-brand-red-light underline underline-offset-4 hover:text-brand-red-primary"
+        >
+          See the list of available regions
+        </a>{' '}
         for the current set.
       </>
     ),
-    review:
-      'Deliberately no count. Six codes are documented in the CLI, this plan has said "two regions," and one region has no public evidence. Settle with Todd, then state the list.',
   },
   {
     value: 'laptop-mount',
@@ -253,8 +254,6 @@ const faqItems: {
         and we&apos;ll show the ones that apply to yours before you start.
       </>
     ),
-    review:
-      'Two internal pricing figures are unreconciled. Confirm both before publishing pricing or billing claims.',
   },
 ]
 
@@ -337,20 +336,6 @@ function KimiLogo({ className }: { className?: string }) {
   )
 }
 
-function ReviewNote({ text, light = false }: { text: string; light?: boolean }) {
-  if (!SHOW_REVIEW_NOTES) return null
-  return (
-    <p
-      className={`flex max-w-[900px] gap-2.5 font-mono text-[11px] leading-[1.6] ${
-        light ? 'text-white/60' : 'text-carbon-600'
-      }`}
-    >
-      <span className={light ? 'text-brand-red-light' : 'text-brand-red-primary'}>REVIEW</span>
-      <span>{text}</span>
-    </p>
-  )
-}
-
 function HeroCodePanel() {
   return (
     <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
@@ -398,18 +383,9 @@ function HeroCodePanel() {
             <span className="text-brand-violet-light">TI_FS_TOKEN</span>=
             <span className="text-carbon-600">$(</span>
             <span className="text-brand-red-light">ti</span> fs create-file-system{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
             <span className="text-brand-blue-light">--display-name</span> agent-workspace{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
             <span className="text-brand-blue-light">--region</span> aws-us-east-1{' '}
             <span className="text-brand-blue-light">--wait</span>{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
             <span className="text-brand-blue-light">--query</span>{' '}
             <span className="text-brand-teal-light">&quot;fs_token&quot;</span>{' '}
             <span className="text-brand-blue-light">--output</span> text
@@ -433,31 +409,19 @@ echo "state that survives the sandbox" >> ~/workspace/notes.md`}
             <span className="text-brand-red-light">export</span>{' '}
             <span className="text-brand-violet-light">TI_FS_TOKEN</span>
           </div>
-          <div className="h-[15px]" />
           <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
             <span className="text-brand-red-light">mkdir</span> ~/workspace
           </div>
-          <div className="h-[15px]" />
           <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
             <span className="text-brand-red-light">ti</span> fs mount{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
             <span className="text-brand-blue-light">--region</span> aws-us-east-1{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
             <span className="text-brand-blue-light">--mount-path</span> ~/workspace
           </div>
-          <div className="h-[15px]" />
           <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
             <span className="text-brand-red-light">echo</span>{' '}
             <span className="text-brand-teal-light">
               &quot;state that survives the sandbox&quot;
             </span>{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
             <span className="text-carbon-600">&gt;&gt;</span> ~/workspace/notes.md
           </div>
         </Command>
@@ -828,11 +792,6 @@ export default function TidbCloudFilesystemPage() {
                     </AccordionTrigger>
                     <AccordionContent className="max-w-[760px] text-carbon-400 [&_code]:font-mono">
                       {item.answer}
-                      {item.review && (
-                        <div className="mt-3">
-                          <ReviewNote text={item.review} />
-                        </div>
-                      )}
                     </AccordionContent>
                   </AccordionItem>
                 ))}
@@ -854,17 +813,9 @@ export default function TidbCloudFilesystemPage() {
               }}
               secondaryCta={{
                 text: 'Open the E2B demo repo',
-                href: 'https://github.com/tidbcloud/ti-cli',
+                href: 'https://github.com/likidu/tidbcloud-fs-e2b-example',
               }}
             />
-            {SHOW_REVIEW_NOTES && (
-              <div className="mt-6">
-                <ReviewNote
-                  light
-                  text="Two entry points only — the Kimi-style clone lab is dropped (not a launch-critical demo). The secondary link is a hard gate: the E2B demo repo has to move off a personal GitHub account, with a license, before 2026-08-16."
-                />
-              </div>
-            )}
           </div>
         </section>
       </main>
