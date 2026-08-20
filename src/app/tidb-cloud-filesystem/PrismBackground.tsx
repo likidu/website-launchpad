@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { disposePrismWebGL } from './PrismBackground.webgl'
 
 // Ambient light-refraction background for the #proof section.
 // Reversed prism: five warm beams enter left, converge in the glass, one
@@ -295,7 +296,9 @@ function compileShader(gl: WebGLRenderingContext, type: number, src: string) {
   gl.shaderSource(shader, src)
   gl.compileShader(shader)
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    console.error('PrismBackground shader:', gl.getShaderInfoLog(shader))
+    if (!gl.isContextLost()) {
+      console.error('PrismBackground shader:', gl.getShaderInfoLog(shader))
+    }
     gl.deleteShader(shader)
     return null
   }
@@ -332,14 +335,26 @@ export function PrismBackground() {
     if (!gl) return bail()
 
     const vert = compileShader(gl, gl.VERTEX_SHADER, VERT)
+    if (!vert) return bail()
     const frag = compileShader(gl, gl.FRAGMENT_SHADER, FRAG)
+    if (!frag) {
+      gl.deleteShader(vert)
+      return bail()
+    }
     const program = gl.createProgram()
-    if (!vert || !frag || !program) return bail()
+    if (!program) {
+      gl.deleteShader(vert)
+      gl.deleteShader(frag)
+      return bail()
+    }
     gl.attachShader(program, vert)
     gl.attachShader(program, frag)
     gl.linkProgram(program)
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.error('PrismBackground link:', gl.getProgramInfoLog(program))
+      if (!gl.isContextLost()) {
+        console.error('PrismBackground link:', gl.getProgramInfoLog(program))
+      }
+      disposePrismWebGL(gl, { buffer: null, program, shaders: [vert, frag] })
       return bail()
     }
     gl.useProgram(program)
@@ -516,7 +531,7 @@ export function PrismBackground() {
       ro.disconnect()
       section.classList.remove(DONE_CLASS)
       canvas.removeEventListener('webglcontextlost', onLost)
-      gl.getExtension('WEBGL_lose_context')?.loseContext()
+      disposePrismWebGL(gl, { buffer: buf, program, shaders: [vert, frag] })
     }
   }, [])
 

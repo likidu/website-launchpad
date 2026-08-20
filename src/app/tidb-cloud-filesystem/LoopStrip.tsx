@@ -74,7 +74,7 @@ const STEPS: LoopStep[] = [
     // title-case-ignore
     title: 'Save Git state',
     line: 'Baseline, dirty overlay and new objects — modelled separately.',
-    mech: 'tdc fs-git · clean tree · dirty overlay · object pack',
+    mech: 'ti fs-git · clean tree · dirty overlay · object pack',
     icon: GitBranch,
   },
   {
@@ -166,7 +166,7 @@ export function LoopStrip({ showMechanisms = true }: { showMechanisms?: boolean 
                 {isActive && autoRunning && (
                   <span
                     key={`${cycle}-${active}`}
-                    className="tdc-fill absolute inset-y-0 left-0 w-full bg-gradient-to-r from-brand-red-primary/[0.04] to-brand-red-primary/[0.18]"
+                    className="ti-fill absolute inset-y-0 left-0 w-full bg-gradient-to-r from-brand-red-primary/[0.04] to-brand-red-primary/[0.18]"
                     style={{ animationDuration: `${INTERVAL_MS}ms` }}
                   />
                 )}

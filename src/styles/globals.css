@@ -735,7 +735,7 @@
 /* Bands enter in sequence but exit together — only the entrance carries the
    order, so the direction reads unambiguously at any point in the loop. */
 /* Whole-card progress fill for the loop strip's active card. */
-@keyframes tdc-fill {
+@keyframes ti-fill {
   from {
     transform: scaleX(0);
   }
@@ -744,14 +744,14 @@
   }
 }
 
-.tdc-fill {
-  animation-name: tdc-fill;
+.ti-fill {
+  animation-name: ti-fill;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
   transform-origin: left;
 }
 
-@keyframes tdc-band-a {
+@keyframes ti-band-a {
   0%,
   2% {
     opacity: 0;
@@ -769,7 +769,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-band-b {
+@keyframes ti-band-b {
   0%,
   11% {
     opacity: 0;
@@ -787,7 +787,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-band-c {
+@keyframes ti-band-c {
   0%,
   20% {
     opacity: 0;
@@ -805,7 +805,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-drop {
+@keyframes ti-drop {
   0%,
   18% {
     opacity: 1;
@@ -821,7 +821,7 @@
     transform: translateX(0);
   }
 }
-@keyframes tdc-keep {
+@keyframes ti-keep {
   0%,
   18% {
     opacity: 0.7;
@@ -837,7 +837,7 @@
 
 /* Working-set chips gather one by one and exit together — same grammar as
    the git bands: only the entrance carries meaning. */
-@keyframes tdc-gather-1 {
+@keyframes ti-gather-1 {
   0%,
   2% {
     opacity: 0;
@@ -855,7 +855,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-gather-2 {
+@keyframes ti-gather-2 {
   0%,
   9% {
     opacity: 0;
@@ -873,7 +873,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-gather-3 {
+@keyframes ti-gather-3 {
   0%,
   16% {
     opacity: 0;
@@ -891,7 +891,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-gather-4 {
+@keyframes ti-gather-4 {
   0%,
   23% {
     opacity: 0;
@@ -909,7 +909,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-gather-5 {
+@keyframes ti-gather-5 {
   0%,
   30% {
     opacity: 0;
@@ -927,7 +927,7 @@
     transform: translateY(0);
   }
 }
-@keyframes tdc-gather-6 {
+@keyframes ti-gather-6 {
   0%,
   37% {
     opacity: 0;
@@ -946,53 +946,53 @@
   }
 }
 
-.tdc-gather-1 {
-  animation: tdc-gather-1 6s infinite;
+.ti-gather-1 {
+  animation: ti-gather-1 6s infinite;
 }
-.tdc-gather-2 {
-  animation: tdc-gather-2 6s infinite;
+.ti-gather-2 {
+  animation: ti-gather-2 6s infinite;
 }
-.tdc-gather-3 {
-  animation: tdc-gather-3 6s infinite;
+.ti-gather-3 {
+  animation: ti-gather-3 6s infinite;
 }
-.tdc-gather-4 {
-  animation: tdc-gather-4 6s infinite;
+.ti-gather-4 {
+  animation: ti-gather-4 6s infinite;
 }
-.tdc-gather-5 {
-  animation: tdc-gather-5 6s infinite;
+.ti-gather-5 {
+  animation: ti-gather-5 6s infinite;
 }
-.tdc-gather-6 {
-  animation: tdc-gather-6 6s infinite;
+.ti-gather-6 {
+  animation: ti-gather-6 6s infinite;
 }
 
-.tdc-band-a {
-  animation: tdc-band-a 6s infinite;
+.ti-band-a {
+  animation: ti-band-a 6s infinite;
 }
-.tdc-band-b {
-  animation: tdc-band-b 6s infinite;
+.ti-band-b {
+  animation: ti-band-b 6s infinite;
 }
-.tdc-band-c {
-  animation: tdc-band-c 6s infinite;
+.ti-band-c {
+  animation: ti-band-c 6s infinite;
 }
-.tdc-drop {
-  animation: tdc-drop 6s ease-in-out infinite;
+.ti-drop {
+  animation: ti-drop 6s ease-in-out infinite;
 }
-.tdc-keep {
-  animation: tdc-keep 6s ease-in-out infinite;
+.ti-keep {
+  animation: ti-keep 6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tdc-band-a,
-  .tdc-band-b,
-  .tdc-band-c,
-  .tdc-gather-1,
-  .tdc-gather-2,
-  .tdc-gather-3,
-  .tdc-gather-4,
-  .tdc-gather-5,
-  .tdc-gather-6,
-  .tdc-drop,
-  .tdc-keep {
+  .ti-band-a,
+  .ti-band-b,
+  .ti-band-c,
+  .ti-gather-1,
+  .ti-gather-2,
+  .ti-gather-3,
+  .ti-gather-4,
+  .ti-gather-5,
+  .ti-gather-6,
+  .ti-drop,
+  .ti-keep {
     animation: none;
     opacity: 1;
     transform: none;

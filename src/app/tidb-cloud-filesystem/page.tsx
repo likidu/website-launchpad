@@ -116,12 +116,12 @@ const faqItems: {
     plain: {
       question: 'Which regions can I create a filesystem in?',
       answer:
-        'Region is a required flag when you create a filesystem. The CLI reference lists the region codes available in the technical preview; run tdc fs create-file-system --help for the current set.',
+        'Region is a required flag when you create a filesystem. The CLI reference lists the region codes available in the technical preview; run ti fs create-file-system --help for the current set.',
     },
     answer: (
       <>
         Region is a required flag when you create a filesystem. The CLI reference lists the region
-        codes available in the technical preview; run <code>tdc fs create-file-system --help</code>{' '}
+        codes available in the technical preview; run <code>ti fs create-file-system --help</code>{' '}
         for the current set.
       </>
     ),
@@ -129,52 +129,34 @@ const faqItems: {
       'Deliberately no count. Six codes are documented in the CLI, this plan has said "two regions," and one region has no public evidence. Settle with Todd, then state the list.',
   },
   {
-    value: 'china-region',
-    q: 'Is there a China region?',
-    plain: {
-      question: 'Is there a China region?',
-      answer:
-        'Not in the technical preview — capacity there is committed to an existing partner workload. Other regions can be discussed by request.',
-    },
-    answer: (
-      <>
-        Not in the technical preview — capacity there is committed to an existing partner workload.
-        Other regions can be discussed by request.
-      </>
-    ),
-  },
-  {
     value: 'laptop-mount',
     q: 'Can I mount it on my laptop?',
     plain: {
       question: 'Can I mount it on my laptop?',
       answer:
-        "Supported, but not what we recommend for evaluation. Run it from a cloud VM in the same region as the filesystem. If you only need to read a file from your own machine, tdc fs read-file doesn't require a mount at all.",
+        "Supported, but not what we recommend for evaluation. Run it from a cloud VM in the same region as the filesystem. If you only need to read a file from your own machine, ti fs read-file doesn't require a mount at all.",
     },
     answer: (
       <>
         Supported, but not what we recommend for evaluation. Run it from a cloud VM in the same
         region as the filesystem. If you only need to read a file from your own machine,{' '}
-        <code>tdc fs read-file</code> doesn&apos;t require a mount at all.
+        <code>ti fs read-file</code> doesn&apos;t require a mount at all.
       </>
     ),
   },
   {
-    value: 'listing',
-    q: (
-      <>
-        Why doesn&apos;t <code className="font-mono">tdc</code> list all of my filesystems?
-      </>
-    ),
+    value: 'posix-support',
+    q: 'Does it support POSIX?',
     plain: {
-      question: "Why doesn't tdc list all of my filesystems?",
+      question: 'Does it support POSIX?',
       answer:
-        'Today the CLI lists filesystems created on the same machine. Account-wide listing lands 2026-08-20, and the console filesystem UI follows on 2026-09-15.',
+        'Yes. When mounted, TiDB Cloud Filesystem is POSIX-compatible, so agents can use ordinary paths, shell commands, filesystem APIs, and development tools. It is designed for AI coding agent workloads.',
     },
     answer: (
       <>
-        Today the CLI lists filesystems created on the same machine. Account-wide listing lands
-        2026-08-20, and the console filesystem UI follows on 2026-09-15.
+        Yes. When mounted, TiDB Cloud Filesystem is POSIX-compatible, so agents can use ordinary
+        paths, shell commands, filesystem APIs, and development tools. It is designed for AI coding
+        agent workloads.
       </>
     ),
   },
@@ -184,13 +166,12 @@ const faqItems: {
     plain: {
       question: 'Is there an SDK?',
       answer:
-        'No. A Go CLI is the whole surface in the technical preview. If you are building agents in TypeScript or Python you will be shelling out to tdc, and that is a real gap rather than a design choice.',
+        'Not yet. The CLI is the full surface during the technical preview. TypeScript and Python SDKs are coming soon.',
     },
     answer: (
       <>
-        No. A Go CLI is the whole surface in the technical preview. If you are building agents in
-        TypeScript or Python you will be shelling out to <code>tdc</code>, and that is a real gap
-        rather than a design choice.
+        Not yet. The CLI is the full surface during the technical preview. TypeScript and Python
+        SDKs are coming soon.
       </>
     ),
   },
@@ -264,17 +245,16 @@ const faqItems: {
     plain: {
       question: 'What does it cost?',
       answer:
-        "There is no published price during the technical preview. List pricing publishes 2026-08-31 and billing becomes effective 2026-09-10. Usage limits apply per account, and we'll show the ones that apply to yours before you start.",
+        "There is no published price during the technical preview. Usage limits apply per account, and we'll show the ones that apply to yours before you start.",
     },
     answer: (
       <>
-        There is no published price during the technical preview. List pricing publishes 2026-08-31
-        and billing becomes effective 2026-09-10. Usage limits apply per account, and we&apos;ll
-        show the ones that apply to yours before you start.
+        There is no published price during the technical preview. Usage limits apply per account,
+        and we&apos;ll show the ones that apply to yours before you start.
       </>
     ),
     review:
-      'Two internal pricing figures are unreconciled, and "unbilled before Sep 10" vs "unpriced" are different claims. Confirm both, or cut the two dates and keep the first sentence only.',
+      'Two internal pricing figures are unreconciled. Confirm both before publishing pricing or billing claims.',
   },
 ]
 
@@ -313,19 +293,19 @@ const gitBands: { n: string; name: string; caption: string; className: string }[
     n: '01',
     name: 'clean tree',
     caption: 'the committed baseline',
-    className: 'tdc-band-a border-white/[0.14]',
+    className: 'ti-band-a border-white/[0.14]',
   },
   {
     n: '02',
     name: 'dirty overlay',
     caption: 'uncommitted modifications',
-    className: 'tdc-band-b border-brand-red-primary/50 bg-brand-red-primary/[0.05]',
+    className: 'ti-band-b border-brand-red-primary/50 bg-brand-red-primary/[0.05]',
   },
   {
     n: '03',
     name: 'object pack',
     caption: 'objects the agent created',
-    className: 'tdc-band-c border-brand-red-primary bg-brand-red-primary/[0.10]',
+    className: 'ti-band-c border-brand-red-primary bg-brand-red-primary/[0.10]',
   },
 ]
 
@@ -376,7 +356,7 @@ function HeroCodePanel() {
     <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
       <div className="flex items-stretch border-b border-white/10">
         <div className="grid justify-items-start gap-[5px] border-b-2 border-brand-red-primary bg-white/5 px-[18px] py-3.5 text-white">
-          <span className="font-mono text-xs">bash · tdc</span>
+          <span className="font-mono text-xs">bash · ti</span>
           <span className="font-mono text-[9px] tracking-[0.06em] text-brand-red-primary">
             AVAILABLE NOW
           </span>
@@ -387,12 +367,24 @@ function HeroCodePanel() {
         </div>
       </div>
       <div className="px-6 py-[22px] font-mono text-[13px] leading-[1.7] text-carbon-200">
-        <Command cmd="curl -fsSL https://tidb.link/tdc | sh">
+        <div className="whitespace-pre-wrap [overflow-wrap:anywhere] text-carbon-700">
+          # install TiDB Cloud CLI
+        </div>
+        <Command
+          cmd={
+            'curl -fsSL https://tidb.link/ti-cli-install | sh\n\nexport PATH="$HOME/.ti/bin:$PATH"'
+          }
+        >
           <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
             <span className="text-brand-red-light">curl</span>{' '}
-            <span className="text-brand-blue-light">-fsSL</span> https://tidb.link/tdc{' '}
+            <span className="text-brand-blue-light">-fsSL</span> https://tidb.link/ti-cli-install{' '}
             <span className="text-carbon-600">|</span>{' '}
             <span className="text-brand-red-light">sh</span>
+          </div>
+          <div className="h-[15px]" />
+          <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
+            <span className="text-brand-red-light">export</span> PATH=
+            <span className="text-brand-teal-light">&quot;$HOME/.ti/bin:$PATH&quot;</span>
           </div>
         </Command>
         <div className="h-[15px]" />
@@ -400,17 +392,16 @@ function HeroCodePanel() {
           # create a workspace — this issues its filesystem token
         </div>
         <Command
-          cmd={`export TDC_FS_TOKEN="$(tdc fs create-file-system --file-system-name agent-workspace --region aws-us-east-1 --wait --query fs_token --output text)"`}
+          cmd={`TI_FS_TOKEN=$(ti fs create-file-system --display-name agent-workspace --region aws-us-east-1 --wait --query "fs_token" --output text)`}
         >
           <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
-            <span className="text-brand-red-light">export</span>{' '}
-            <span className="text-brand-violet-light">TDC_FS_TOKEN</span>=
-            <span className="text-carbon-600">&quot;$(</span>
-            <span className="text-brand-red-light">tdc</span> fs create-file-system{' '}
+            <span className="text-brand-violet-light">TI_FS_TOKEN</span>=
+            <span className="text-carbon-600">$(</span>
+            <span className="text-brand-red-light">ti</span> fs create-file-system{' '}
             <span className="text-carbon-600">\</span>
           </div>
           <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
-            <span className="text-brand-blue-light">--file-system-name</span> agent-workspace{' '}
+            <span className="text-brand-blue-light">--display-name</span> agent-workspace{' '}
             <span className="text-carbon-600">\</span>
           </div>
           <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
@@ -419,29 +410,46 @@ function HeroCodePanel() {
             <span className="text-carbon-600">\</span>
           </div>
           <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
-            <span className="text-brand-blue-light">--query</span> fs_token{' '}
+            <span className="text-brand-blue-light">--query</span>{' '}
+            <span className="text-brand-teal-light">&quot;fs_token&quot;</span>{' '}
             <span className="text-brand-blue-light">--output</span> text
-            <span className="text-carbon-600">)&quot;</span>
+            <span className="text-carbon-600">)</span>
           </div>
         </Command>
         <div className="h-[15px]" />
         <div className="whitespace-pre-wrap [overflow-wrap:anywhere] text-carbon-700">
           # in the sandbox: mount it, work in it, let the sandbox end
         </div>
-        <Command cmd="tdc fs mount-file-system --file-system-name agent-workspace --mount-path /workspace">
+        <Command
+          cmd={`export TI_FS_TOKEN
+
+mkdir ~/workspace
+
+ti fs mount --region aws-us-east-1 --mount-path ~/workspace
+
+echo "state that survives the sandbox" >> ~/workspace/notes.md`}
+        >
           <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
-            <span className="text-brand-red-light">tdc</span> fs mount-file-system{' '}
+            <span className="text-brand-red-light">export</span>{' '}
+            <span className="text-brand-violet-light">TI_FS_TOKEN</span>
+          </div>
+          <div className="h-[15px]" />
+          <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
+            <span className="text-brand-red-light">mkdir</span> ~/workspace
+          </div>
+          <div className="h-[15px]" />
+          <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
+            <span className="text-brand-red-light">ti</span> fs mount{' '}
             <span className="text-carbon-600">\</span>
           </div>
           <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
-            <span className="text-brand-blue-light">--file-system-name</span> agent-workspace{' '}
+            <span className="text-brand-blue-light">--region</span> aws-us-east-1{' '}
             <span className="text-carbon-600">\</span>
           </div>
           <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
-            <span className="text-brand-blue-light">--mount-path</span> /workspace
+            <span className="text-brand-blue-light">--mount-path</span> ~/workspace
           </div>
-        </Command>
-        <Command cmd={`echo "state that survives the sandbox" >> /workspace/notes.md`}>
+          <div className="h-[15px]" />
           <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
             <span className="text-brand-red-light">echo</span>{' '}
             <span className="text-brand-teal-light">
@@ -450,24 +458,7 @@ function HeroCodePanel() {
             <span className="text-carbon-600">\</span>
           </div>
           <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
-            <span className="text-carbon-600">&gt;&gt;</span> /workspace/notes.md
-          </div>
-        </Command>
-        <div className="h-[15px]" />
-        <div className="whitespace-pre-wrap [overflow-wrap:anywhere] text-carbon-700">
-          # anywhere else, same token, no mount required
-        </div>
-        <Command cmd="tdc fs read-file --file-system-name agent-workspace --path /notes.md">
-          <div className="whitespace-pre-wrap [overflow-wrap:anywhere]">
-            <span className="text-brand-red-light">tdc</span> fs read-file{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
-            <span className="text-brand-blue-light">--file-system-name</span> agent-workspace{' '}
-            <span className="text-carbon-600">\</span>
-          </div>
-          <div className="whitespace-pre-wrap pl-[2ch] [overflow-wrap:anywhere]">
-            <span className="text-brand-blue-light">--path</span> /notes.md
+            <span className="text-carbon-600">&gt;&gt;</span> ~/workspace/notes.md
           </div>
         </Command>
       </div>
@@ -500,7 +491,9 @@ export default function TidbCloudFilesystemPage() {
                 behind — dirty tree, new objects, test output, artifacts.
               </p>
               <div className="flex flex-wrap items-center gap-6">
-                <PrimaryButton href="https://docs.pingcap.com/">Quickstart</PrimaryButton>
+                <PrimaryButton href="https://ai.pingcap-docsite-preview.pages.dev/ai/ti-agent-sandbox-example/">
+                  Quickstart
+                </PrimaryButton>
                 <SecondaryButton href="https://www.pingcap.com/contact-us/">
                   Talk to us
                 </SecondaryButton>
@@ -508,6 +501,13 @@ export default function TidbCloudFilesystemPage() {
             </div>
             <div data-shade-block>
               <HeroCodePanel />
+              <a
+                href="https://ai.pingcap-docsite-preview.pages.dev/ai/ti-overview/"
+                className="mt-4 inline-flex items-center gap-2 font-mono text-[13px] text-carbon-400 transition-colors duration-150 hover:text-carbon-200"
+              >
+                Read the TiDB Cloud CLI overview
+                <span aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
         </section>
@@ -563,7 +563,7 @@ export default function TidbCloudFilesystemPage() {
                       </div>
                     ))}
                     <p className="mt-auto pt-2 font-mono text-xs leading-[1.6] text-carbon-700">
-                      <code>tdc fs-git clone-git-workspace</code> ·{' '}
+                      <code>ti fs-git clone-git-workspace</code> ·{' '}
                       <code>hydrate-git-workspace</code> · <code>add-git-worktree</code>
                     </p>
                   </div>
@@ -595,7 +595,7 @@ export default function TidbCloudFilesystemPage() {
                         {persistedFiles.map((file, i) => (
                           <span
                             key={file}
-                            className="tdc-keep border-l-2 border-brand-red-primary pl-[9px] font-mono text-[11px] text-white"
+                            className="ti-keep border-l-2 border-brand-red-primary pl-[9px] font-mono text-[11px] text-white"
                             style={{ animationDelay: `${i * 0.12}s` }}
                           >
                             {file}
@@ -609,7 +609,7 @@ export default function TidbCloudFilesystemPage() {
                         {localOnlyFiles.map((file, i) => (
                           <span
                             key={file}
-                            className="tdc-drop border-l-2 border-carbon-800 pl-[9px] font-mono text-[11px] text-carbon-400"
+                            className="ti-drop border-l-2 border-carbon-800 pl-[9px] font-mono text-[11px] text-carbon-400"
                             style={{ animationDelay: `${i * 0.12}s` }}
                           >
                             {file}
@@ -649,7 +649,7 @@ export default function TidbCloudFilesystemPage() {
                         {workingSetFiles.map((file, index) => (
                           <span
                             key={file}
-                            className={`tdc-gather-${index + 1} rounded border border-white/[0.14] px-2 py-1 font-mono text-[11px] text-carbon-200`}
+                            className={`ti-gather-${index + 1} rounded border border-white/[0.14] px-2 py-1 font-mono text-[11px] text-carbon-200`}
                           >
                             {file}
                           </span>
@@ -679,7 +679,7 @@ export default function TidbCloudFilesystemPage() {
             <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-2">
               <div>
                 <p className="text-[64px] font-bold leading-[0.92] tracking-[-0.04em] text-white md:text-[96px]">
-                  <CountUp value="70,000+" />
+                  <CountUp value="100,000+" />
                 </p>
                 <p className="mt-[14px] font-mono text-[13px] text-carbon-400">
                   file systems in production behind Kimi Work (Moonshot AI)
@@ -779,7 +779,39 @@ export default function TidbCloudFilesystemPage() {
           </div>
         </section>
 
-        {/* 06 FAQ */}
+        {/* 06 Hands-on lab */}
+        <section id="hands-on-lab" className="bg-bg-primary pb-20">
+          <div className="mx-auto max-w-container px-4 md:px-8 lg:px-16">
+            <div className="relative grid gap-7 overflow-hidden border-y border-white/10 py-8 md:grid-cols-[1fr_auto] md:items-end md:gap-12">
+              <svg
+                aria-hidden="true"
+                className="pointer-events-none absolute right-8 top-1/2 hidden h-36 w-36 -translate-y-1/2 text-white/[0.06] lg:block"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M15.9994 2V4H14.9994V7.24291C14.9994 8.40051 15.2506 9.54432 15.7357 10.5954L20.017 19.8714C20.3641 20.6236 20.0358 21.5148 19.2836 21.8619C19.0865 21.9529 18.8721 22 18.655 22H5.34375C4.51532 22 3.84375 21.3284 3.84375 20.5C3.84375 20.2829 3.89085 20.0685 3.98181 19.8714L8.26306 10.5954C8.74816 9.54432 8.99939 8.40051 8.99939 7.24291V4H7.99939V2H15.9994ZM13.3873 10.0012H10.6115C10.5072 10.3644 10.3823 10.7221 10.2371 11.0724L10.079 11.4335L6.12439 20H17.8734L13.9198 11.4335C13.7054 10.9691 13.5276 10.4902 13.3873 10.0012ZM10.9994 7.24291C10.9994 7.49626 10.9898 7.7491 10.9706 8.00087H13.0282C13.0189 7.87982 13.0119 7.75852 13.0072 7.63704L12.9994 7.24291V4H10.9994V7.24291Z" />
+              </svg>
+              <div className="relative z-10">
+                <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.06em] text-brand-red-primary">
+                  Hands-on lab
+                </p>
+                {/* title-case-ignore */}
+                <h2 className="mb-3 text-h3-lg font-bold">Try it in a real sandbox.</h2>
+                <p className="max-w-[560px] text-body-md text-carbon-400">
+                  A guided, 120-minute lab using a virtual machine.
+                </p>
+              </div>
+              <div className="relative z-10">
+                <SecondaryButton href="https://labs.tidb.io/labs/demo_901">
+                  Start the TiDB Cloud Filesystem lab
+                </SecondaryButton>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 07 FAQ */}
         <section id="faq" className="bg-gradient-dark-top py-20">
           <div className="mx-auto max-w-container px-4 md:px-8 lg:px-16">
             <p className="mb-8 font-mono text-[15px] text-carbon-400">Straight answers</p>
@@ -809,17 +841,20 @@ export default function TidbCloudFilesystemPage() {
           </div>
         </section>
 
-        {/* 07 Closing CTA */}
+        {/* 08 Closing CTA */}
         <section className="bg-brand-red-bg py-16 text-white">
           <div className="mx-auto max-w-container px-4 md:px-8 lg:px-16">
             <p className="mb-4 text-center font-mono text-[15px] text-white/70">Get started</p>
             <CtaSection
               title="Nothing to rebuild. Everything to build on."
               subtitle="Write from one runtime. Let it end. Reopen the workspace from another and check that the second run continues from the first. That's the whole test."
-              primaryCta={{ text: 'Read the quickstart', href: 'https://docs.pingcap.com/' }}
+              primaryCta={{
+                text: 'Read the quickstart',
+                href: 'https://ai.pingcap-docsite-preview.pages.dev/ai/ti-agent-sandbox-example/',
+              }}
               secondaryCta={{
                 text: 'Open the E2B demo repo',
-                href: 'https://github.com/tidbcloud/tdc',
+                href: 'https://github.com/tidbcloud/ti-cli',
               }}
             />
             {SHOW_REVIEW_NOTES && (
